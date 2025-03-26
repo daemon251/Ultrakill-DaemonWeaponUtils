@@ -5,6 +5,7 @@ using System.Reflection;
 using DaemonWeaponUtilsPlugin;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 public class Colors
 {
     public static string DefaultParentFolder = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";
@@ -186,39 +187,32 @@ public class Colors
         if (gameObject.TryGetComponent<Light>(out component4)) {component4.color = color;}
     }
     
-    public static List<Projectile> projectiles = new List<Projectile>(0);
-    public static List<Grenade> grenades = new List<Grenade>(0);
-    public static List<Harpoon> harpoons = new List<Harpoon>(0);
-    public static List<Nail> nails = new List<Nail>(0);
-    public static List<Cannonball> cannonballs = new List<Cannonball>(0);
-    public static List<Coin> coins = new List<Coin>(0);
-    public static List<RevolverBeam> revolverBeams = new List<RevolverBeam>(0);
+    public static List<RevolverBeam> revolverBeams = new List<RevolverBeam>();
+    public static List<Projectile> projectiles = new List<Projectile>();
+    public static List<Nail> nails = new List<Nail>();
+    public static List<Harpoon> harpoons = new List<Harpoon>();
+
     public static void ColorProjectiles()
     {
         //this still isnt very efficent but it's miles better than before
         if(ModConfig.customColors == false || Plugin.modEnabled == false) {return;}
-        GameObject[] gameObjects = UnityEngine.Object.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //this eats some performance
-        List<Projectile> projectilesNew = new List<Projectile>();
-        List<Grenade> grenadesNew = new List<Grenade>();
-        List<Harpoon> harpoonsNew = new List<Harpoon>();
-        List<Nail> nailsNew = new List<Nail>();
-        List<Cannonball> cannonballsNew = new List<Cannonball>();
-        List<Coin> coinsNew = new List<Coin>();
-        List<RevolverBeam> revolverBeamsNew = new List<RevolverBeam>();
-        for(int i = 0; i < gameObjects.Length; i++)
+        //GameObject[] gameObjects = UnityEngine.Object.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //this eats some performance
+        //List<Projectile> projectilesNew = new List<Projectile>();
+        //List<Harpoon> harpoonsNew = new List<Harpoon>();
+        //List<Nail> nailsNew = new List<Nail>();
+        /*for(int i = 0; i < gameObjects.Length; i++)
         {
             GameObject go = gameObjects[i];
             if(go == null) {continue;}
-            if(go.GetComponent<Grenade>() != null) {grenadesNew.Add(go.GetComponent<Grenade>());}
-            else if(go.GetComponent<Harpoon>() != null) {harpoonsNew.Add(go.GetComponent<Harpoon>());}
-            else if(go.GetComponent<Nail>() != null) {nailsNew.Add(go.GetComponent<Nail>());}
-            else if(go.GetComponent<Projectile>() != null) {projectilesNew.Add(go.GetComponent<Projectile>());}
-            else if(go.GetComponent<Cannonball>() != null) {cannonballsNew.Add(go.GetComponent<Cannonball>());}
-            else if(go.GetComponent<Coin>() != null) {coinsNew.Add(go.GetComponent<Coin>());}
-            else if(go.GetComponent<RevolverBeam>() != null) {revolverBeamsNew.Add(go.GetComponent<RevolverBeam>());}
-        }
-        foreach(Projectile projectile in projectilesNew)
+            //else if(go.GetComponent<Harpoon>() != null) {harpoonsNew.Add(go.GetComponent<Harpoon>());}
+            //else if(go.GetComponent<Nail>() != null) {nailsNew.Add(go.GetComponent<Nail>());}
+            //else if(go.GetComponent<Projectile>() != null) {projectilesNew.Add(go.GetComponent<Projectile>());}
+        }*/
+
+        for(int i = 0; i < projectiles.Count; i++)
         {
+            Projectile projectile = projectiles[i];
+            if(projectile == null) {projectiles.Remove(projectile); i += -1; continue;}
             //if(projectiles.Contains(projectile)) {continue;} //continue if we've already seen this projectile //removed to make rainbow cooler
             if(projectile.parried)
             {
@@ -325,8 +319,7 @@ public class Colors
                 ColorGameObject(projectile.sourceWeapon.GetComponent<Shotgun>().muzzleFlash, color);
             }
         }
-        projectiles = projectilesNew;
-        foreach(Grenade grenade in grenadesNew)
+        foreach(Grenade grenade in MonoSingleton<ObjectTracker>.Instance.grenadeList)
         {
             //if(grenades.Contains(grenade)) {continue;}
             if(grenade != null && grenade.name == "Grenade(Clone)")
@@ -421,29 +414,13 @@ public class Colors
                 GameObject muzzleFlashReal = muzzleFlash.transform.GetChild(0).gameObject;
                 SpriteRenderer muzzleFlashSprite = muzzleFlashReal.GetComponent<SpriteRenderer>();
                 muzzleFlashSprite.color = color;
-
-                /*GameObject FreezeEffect = grenade.freezeEffect;
-                GameObject Sprite = FreezeEffect.transform.GetChild(0).gameObject;
-                GameObject RealSprite = Sprite.transform.GetChild(0).gameObject;
-                Color freezeframeColor = ModConfig.freezeframeColor;
-                freezeframeColor = SpecialColorLogic(ModConfig.freezeframeSpecialColor, RealSprite.GetComponent<SpriteRenderer>().color, freezeframeColor);
-
-                RealSprite.GetComponent<SpriteRenderer>().color = freezeframeColor;
-
-                GameObject RealSprite1 = RealSprite.transform.GetChild(0).gameObject;
-                GameObject RealSprite2 = RealSprite.transform.GetChild(1).gameObject;
-                GameObject RealSprite3 = RealSprite.transform.GetChild(2).gameObject;
-                GameObject RealSprite4 = RealSprite.transform.GetChild(3).gameObject;
-
-                RealSprite1.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                RealSprite2.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                RealSprite3.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                RealSprite4.GetComponent<SpriteRenderer>().color = freezeframeColor;*/
             }
         }
-        grenades = grenadesNew;
-        foreach(Harpoon harpoon in harpoonsNew)
+        for(int i = 0; i < harpoons.Count; i++)
         {
+            Harpoon harpoon = harpoons[i];
+            if(harpoon == null) {harpoons.Remove(harpoon); i += -1; continue;}
+
             Color color = new Color();
             //if(harpoons.Contains(harpoon)) {continue;}
             if(harpoon.sourceWeapon != null && harpoon.sourceWeapon.GetComponent<Railcannon>() != null)
@@ -499,9 +476,11 @@ public class Colors
             Light component4;
             if (harpoon.TryGetComponent<Light>(out component4)) {component4.color = color;}
         }
-        harpoons = harpoonsNew;
-        foreach(Nail nail in nailsNew)
+        for(int i = 0; i < nails.Count; i++)
         {
+            Nail nail = nails[i];
+            if(nail == null) {nails.Remove(nail); i += -1; continue;}
+
             //if(nails.Contains(nail) && ModConfig.nailFollowCurrentRainbow == false){continue;} 
             int variation = -1;
             if(nail.sourceWeapon.GetComponent<Nailgun>() != null)
@@ -552,8 +531,7 @@ public class Colors
                 ColorGameObject(nail.sourceWeapon.GetComponent<Nailgun>().muzzleFlash2, color);
             }
         }
-        nails = nailsNew;
-        foreach(Cannonball cannonball in cannonballsNew)
+        foreach(Cannonball cannonball in MonoSingleton<ObjectTracker>.Instance.cannonballList)
         {
             /*Color color = ModConfig.cannonballColor;
             if(ModConfig.enableColors[4, 1] == false) {break;}
@@ -593,8 +571,7 @@ public class Colors
             Light component4;
             if (cannonball.TryGetComponent<Light>(out component4)) {component4.color = color;}*/
         }
-        cannonballs = cannonballsNew;
-        foreach(Coin coin in coinsNew)
+        foreach(Coin coin in MonoSingleton<CoinList>.Instance.revolverCoinsList)
         {
             if(ModConfig.coinSettingsToggle == false) {break;}
             Color coinColor = ModConfig.coinColor;
@@ -638,12 +615,12 @@ public class Colors
                 component3.colorGradient = gradient;
             }
         }
-        coins = coinsNew;
-        foreach(RevolverBeam revolverBeam in revolverBeamsNew)
+        for(int i = 0; i < revolverBeams.Count; i++)
         {
+            RevolverBeam revolverBeam = revolverBeams[i];
+            if(revolverBeam == null) {revolverBeams.Remove(revolverBeam); i += -1; continue;} //is this the only condition to remove it?
             ColorRevolverBeamStart(revolverBeam, false, false);
         }
-        revolverBeams = revolverBeamsNew;
     }
     public static void ColorLineRenderer(LineRenderer lineRenderer, Color color, float width = 1f)
     {
@@ -666,6 +643,7 @@ public class Colors
     public static void ColorRevolverBeamStart(RevolverBeam revolverBeam, bool changeWidth, bool firstTime = false)
     {
         if(revolverBeam == null || revolverBeam.sourceWeapon == null || ModConfig.customColors == false || revolverBeam.beamType == BeamType.Enemy) {return;}
+        if(firstTime == true) {revolverBeams.Add(revolverBeam);}
         Color color = Color.black;
         int variation = -1;
         float width = 1f;
@@ -791,6 +769,9 @@ public class Colors
         {
             if(ModConfig.customColors == false) {return;}
             if(Plugin.modEnabled == false) {return;}
+
+            projectiles = (UnityEngine.Object.FindObjectsOfType(typeof(Projectile)) as Projectile[]).ToList<Projectile>();
+
             int variation = -1;
             if     (MonoSingleton<GunControl>.Instance.currentWeapon.GetComponent<Shotgun>().variation == 0) {variation = 0;}
             else if(MonoSingleton<GunControl>.Instance.currentWeapon.GetComponent<Shotgun>().variation == 1) {variation = 1;}
@@ -817,6 +798,26 @@ public class Colors
                 muzzleFlashSpriteRenderer.sprite = newSprite;
                 muzzleFlashSpriteRenderer.color = color;
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(Nailgun), "Shoot")]
+    public class NailgunShootPatch
+    {
+        [HarmonyPrefix]
+        private static void Prefix()
+        {
+            nails = (UnityEngine.Object.FindObjectsOfType(typeof(Nail)) as Nail[]).ToList<Nail>();
+        }
+    }
+
+    [HarmonyPatch(typeof(Railcannon), "Shoot")]
+    public class RailcannonShootPatch
+    {
+        [HarmonyPrefix]
+        private static void Prefix()
+        {
+            harpoons = (UnityEngine.Object.FindObjectsOfType(typeof(Harpoon)) as Harpoon[]).ToList<Harpoon>();
         }
     }
 
@@ -855,6 +856,8 @@ public class Colors
             if(ModConfig.customColors == false) {return;}
             if(Plugin.modEnabled == false) {return;}
             if(ModConfig.parryProjectileColored == false) {return;}
+
+            projectiles = (UnityEngine.Object.FindObjectsOfType(typeof(Projectile)) as Projectile[]).ToList<Projectile>();
 
             Color currentColor = new Color(1f, 1f, 1f); //first tick its active, of course its the default color
             color = SpecialColorLogic(ModConfig.parrySpecialColor, currentColor, color);

@@ -454,13 +454,13 @@ public class ModConfig
 
         if(i == 0)
         {
-            ColorField freezeframeRocketColorField = new ColorField(division, "Frozen Rocket Color (currently broken)", "FrozenRocketColor" + i, Color.white);
+            /*ColorField freezeframeRocketColorField = new ColorField(division, "Frozen Rocket Color (currently broken)", "FrozenRocketColor" + i, Color.white);
             freezeframeRocketColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {freezeframeColor = e.value;};
             freezeframeColor = freezeframeRocketColorField.value; 
 
             EnumField<SpecialColorEnum> freezeframeRocketSpecialColorField = new EnumField<SpecialColorEnum>(division, "Frozen Rocket Color Attribute", "FrozenRocketSpecialColor" + i, SpecialColorEnum.Default);
             freezeframeRocketSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {freezeframeSpecialColor = e.value;};
-            freezeframeSpecialColor = freezeframeRocketSpecialColorField.value;
+            freezeframeSpecialColor = freezeframeRocketSpecialColorField.value;*/
         }
         else if(i == 1)
         {
