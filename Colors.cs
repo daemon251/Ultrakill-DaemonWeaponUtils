@@ -770,8 +770,6 @@ public class Colors
             if(ModConfig.customColors == false) {return;}
             if(Plugin.modEnabled == false) {return;}
 
-            projectiles = (UnityEngine.Object.FindObjectsOfType(typeof(Projectile)) as Projectile[]).ToList<Projectile>();
-
             int variation = -1;
             if     (MonoSingleton<GunControl>.Instance.currentWeapon.GetComponent<Shotgun>().variation == 0) {variation = 0;}
             else if(MonoSingleton<GunControl>.Instance.currentWeapon.GetComponent<Shotgun>().variation == 1) {variation = 1;}
@@ -799,13 +797,22 @@ public class Colors
                 muzzleFlashSpriteRenderer.color = color;
             }
         }
+    
+        [HarmonyPostfix]
+        private static void Postfix()
+        {
+            if(ModConfig.customColors == false) {return;}
+            if(Plugin.modEnabled == false) {return;}
+
+            projectiles = (UnityEngine.Object.FindObjectsOfType(typeof(Projectile)) as Projectile[]).ToList<Projectile>();
+        }
     }
 
     [HarmonyPatch(typeof(Nailgun), "Shoot")]
     public class NailgunShootPatch
     {
-        [HarmonyPrefix]
-        private static void Prefix()
+        [HarmonyPostfix]
+        private static void Postfix()
         {
             nails = (UnityEngine.Object.FindObjectsOfType(typeof(Nail)) as Nail[]).ToList<Nail>();
         }
@@ -814,8 +821,8 @@ public class Colors
     [HarmonyPatch(typeof(Railcannon), "Shoot")]
     public class RailcannonShootPatch
     {
-        [HarmonyPrefix]
-        private static void Prefix()
+        [HarmonyPostfix]
+        private static void Postfix()
         {
             harpoons = (UnityEngine.Object.FindObjectsOfType(typeof(Harpoon)) as Harpoon[]).ToList<Harpoon>();
         }
