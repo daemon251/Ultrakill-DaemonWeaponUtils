@@ -11,3 +11,17 @@ This mod gives users the ability to:
 Right now this mod is poorly optimized and there are also probably plenty of bugs. I also haven't implemented everything that I have wanted to yet, but the mod is currently relatively stable.
 
 If you encounter an issue, raise an issue on the github project or contact me at discord preferably through the New Blood discord ultrakill-modding channel at: daemon8363
+
+# DEMONSTRATIONS
+
+*The 75 cents in my pocket:*
+
+![DeamonWeaponUtilsgif0](https://raw.githubusercontent.com/daemon251/Ultrakill-DaemonWeaponUtils/refs/heads/main/gif/gif0.gif)
+
+*Customize the colors of any weapon's bullets*
+
+![DeamonWeaponUtilsgif0](https://raw.githubusercontent.com/daemon251/Ultrakill-DaemonWeaponUtils/refs/heads/main/gif/gif1.gif)
+
+*Saws :D*
+
+![DeamonWeaponUtilsgif0](https://raw.githubusercontent.com/daemon251/Ultrakill-DaemonWeaponUtils/refs/heads/main/gif/gif2.gif)
