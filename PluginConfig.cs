@@ -129,6 +129,8 @@ public class ModConfig
         zPosField.onValueChange += (FloatField.FloatValueChangeEvent e) => {weaponOffsets[i].z = e.value;}; 
         weaponOffsets[i].z = zPosField.value;
 
+        new ConfigHeader(positionPanel, "------------------------------------------------------").textSize = 16;
+
         FloatField rollAngField = new FloatField(positionPanel, "Roll Offset", "rollAngOffset" + i, 0.0f, -180f, 180f);
         rollAngField.onValueChange += (FloatField.FloatValueChangeEvent e) => {weaponAngles[i].x = e.value;}; 
         weaponAngles[i].x = rollAngField.value;
@@ -140,6 +142,8 @@ public class ModConfig
         FloatField yawAngField = new FloatField(positionPanel, "Yaw Offset", "yawAngOffset" + i, 0.0f, -180f, 180f);
         yawAngField.onValueChange += (FloatField.FloatValueChangeEvent e) => {weaponAngles[i].z = e.value;}; 
         weaponAngles[i].z = yawAngField.value;
+
+        new ConfigHeader(positionPanel, "------------------------------------------------------").textSize = 16;
 
         FloatField xScaleField = new FloatField(positionPanel, "X Scale", "xScale" + i, 1.0f, -100f, 100f);
         xScaleField.onValueChange += (FloatField.FloatValueChangeEvent e) => {weaponScales[i].x = e.value;}; 
@@ -159,6 +163,8 @@ public class ModConfig
         ConfigDivision crosshairDivision = new ConfigDivision(crosshairPanel, "crosshairDivision" + i);
         crosshairStyleField.onValueChange += (EnumField<CrossHairEnum>.EnumValueChangeEvent e) => {crosshairStyles[i / 3, i % 3] = e.value; if(e.value == CrossHairEnum.UltrakillBase) {crosshairDivision.interactable = false;} else {{crosshairDivision.interactable = true;}}};
         crosshairStyles[i / 3, i % 3] = crosshairStyleField.value; if(crosshairStyleField.value == CrossHairEnum.UltrakillBase) {crosshairDivision.interactable = false;} else {{crosshairDivision.interactable = true;}}
+
+        new ConfigHeader(crosshairDivision, "------------------------------------------------------").textSize = 16;
 
         FloatField crosshairScaleField = new FloatField(crosshairDivision, "Crosshair Scale", "crosshairScale" + i, 1f, 0f, 100f);
         crosshairScaleField.onValueChange += (FloatField.FloatValueChangeEvent e) => {crosshairScales[i / 3, i % 3] = e.value;};
@@ -220,6 +226,8 @@ public class ModConfig
         enabledBeamColorField.onValueChange += (BoolField.BoolValueChangeEvent e) => {enableColors[0, i] = e.value; division.interactable = e.value;};
         enableColors[0, i] = enabledBeamColorField.value; division.interactable = enabledBeamColorField.value;
 
+        new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
         ColorField beamColorField = new ColorField(division, "Beam Color", "RevolverBeamColor" + i, Color.white);
         beamColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {revolverBeamColors[i] = e.value;};
         revolverBeamColors[i] = beamColorField.value;
@@ -234,6 +242,8 @@ public class ModConfig
 
         if(i == 0)
         {
+            new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
             ColorField beamAltColorField = new ColorField(division, "Alternate Fire Beam Color", "RevolverAltBeamColor" + i, Color.white);
             beamAltColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {piercerAltBeamColor = e.value; Colors.MakeColoredPiercerAltTexture(Color.white);};
             piercerAltBeamColor = beamAltColorField.value; 
@@ -264,6 +274,8 @@ public class ModConfig
         }
         else if(i == 1)
         {
+            new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
             BoolField customCoinColorsField = new BoolField(colorPanel, "Custom Coin Settings", "customCoinSettings", false);
             ConfigDivision coinDivision = new ConfigDivision(colorPanel, "coinDivision");
             customCoinColorsField.onValueChange += (BoolField.BoolValueChangeEvent e) => {coinSettingsToggle = e.value; coinDivision.interactable = e.value;};
@@ -295,6 +307,8 @@ public class ModConfig
         }
         else if(i == 2)
         {
+            new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
             FloatField altFireBeamWidthField = new FloatField(division, "Alt Fire Beam Width (Stacks)", "sharpshooterAltFireBeamWidth" + i, 1.0f, 0.0f, 100f);
             altFireBeamWidthField.onValueChange += (FloatField.FloatValueChangeEvent e) => {sharpshooterAltBeamWidth = e.value;};
             sharpshooterAltBeamWidth = altFireBeamWidthField.value;
@@ -326,6 +340,8 @@ public class ModConfig
         enabledPelletColorField.onValueChange += (BoolField.BoolValueChangeEvent e) => {enableColors[1, i] = e.value; division.interactable = e.value;};
         enableColors[1, i] = enabledPelletColorField.value; division.interactable = enabledPelletColorField.value;
 
+        new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
         ConfigDivision specificColorDivision = new ConfigDivision(division, "ShotgunSpecificColorDivision");
         ColorField pelletColorField = new ColorField(specificColorDivision, "Pellet Color", "ShotgunPelletColor" + i, Color.white);
         pelletColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {shotgunPelletColors[i] = e.value;};
@@ -337,6 +353,8 @@ public class ModConfig
 
         if(i == 0)
         {
+            new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
             ConfigDivision coreEjectColorDivision = new ConfigDivision(division, "coreEjectColorDivision");
             ColorField coreEjectColorField = new ColorField(coreEjectColorDivision, "Core Eject Grenade Color", "CoreEjectGrenadeColor", Color.white);
             coreEjectColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {coreEjectColor = e.value;};
@@ -369,6 +387,8 @@ public class ModConfig
         enabledNailColorField.onValueChange += (BoolField.BoolValueChangeEvent e) => {enableColors[2, i] = e.value; division.interactable = e.value;};
         enableColors[2, i] = enabledNailColorField.value; division.interactable = enabledNailColorField.value;
 
+        new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
         ConfigDivision specificColorDivision = new ConfigDivision(division, "NailgunSpecificColorDivision");
         ColorField nailColorField = new ColorField(specificColorDivision, "Nail Color", "NailgunNailColor" + i, Color.white);
         nailColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {nailgunNailColors[i] = e.value;};
@@ -398,6 +418,8 @@ public class ModConfig
         enabledBeamColorField.onValueChange += (BoolField.BoolValueChangeEvent e) => {enableColors[3, i] = e.value; division.interactable = e.value;};
         enableColors[3, i] = enabledBeamColorField.value; division.interactable = enabledBeamColorField.value;
 
+        new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
         if(i != 1)
         {
             FloatField beamWidthField = new FloatField(division, "Beam Width / Time", "railcannonBeamWidth" + i, 1.0f, 0.0f, 100f);
@@ -415,6 +437,8 @@ public class ModConfig
 
         if(i == 0)
         {
+            new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
+
             BoolField electricRailcannonEffectColorChangeField = new BoolField(division, "Electric Effect Color Change", "electricEffectColorChange", true);
             electricRailcannonEffectColorChangeField.onValueChange += (BoolField.BoolValueChangeEvent e) => {electricRailcannonEffectColorChange = e.value;};
             electricRailcannonEffectColorChange = electricRailcannonEffectColorChangeField.value;
@@ -442,6 +466,8 @@ public class ModConfig
         ConfigDivision division = new ConfigDivision(colorPanel, "RocketLauncherColorFieldDivision" + i);
         enabledRocketColorField.onValueChange += (BoolField.BoolValueChangeEvent e) => {enableColors[4, i] = e.value; division.interactable = e.value;};
         enableColors[4, i] = enabledRocketColorField.value; division.interactable = enabledRocketColorField.value;
+
+        new ConfigHeader(division, "------------------------------------------------------").textSize = 16;
 
         ConfigDivision specificColorDivision = new ConfigDivision(division, "RocketLauncherSpecificColorDivision");
         ColorField rocketColorField = new ColorField(specificColorDivision, "Rocket Color", "RocketLauncherRocketColor" + i, Color.white);
@@ -523,6 +549,8 @@ public class ModConfig
         zPosGlobalField.onValueChange += (FloatField.FloatValueChangeEvent e) => {globalOffset.z = e.value;}; 
         globalOffset.z = zPosGlobalField.value;
 
+        new ConfigHeader(globalPositionPanel, "------------------------------------------------------").textSize = 16;
+
         FloatField rollAngField = new FloatField(globalPositionPanel, "Roll Offset", "rollAngGlobalOffset", 0.0f, -180f, 180f);
         rollAngField.onValueChange += (FloatField.FloatValueChangeEvent e) => {globalAngle.x = e.value;}; 
         globalAngle.x = rollAngField.value;
@@ -534,6 +562,8 @@ public class ModConfig
         FloatField yawAngField = new FloatField(globalPositionPanel, "Yaw Offset", "yawAngGlobalOffset", 0.0f, -180f, 180f);
         yawAngField.onValueChange += (FloatField.FloatValueChangeEvent e) => {globalAngle.z = e.value;}; 
         globalAngle.z = yawAngField.value;
+
+        new ConfigHeader(globalPositionPanel, "------------------------------------------------------").textSize = 16;
 
         FloatField xScaleField = new FloatField(globalPositionPanel, "X Scale", "xGlobalScale", 1.0f, -100f, 100f);
         xScaleField.onValueChange += (FloatField.FloatValueChangeEvent e) => {globalScale.x = e.value;}; 
@@ -556,6 +586,8 @@ public class ModConfig
         customVisualsField.onValueChange += (BoolField.BoolValueChangeEvent e) => {customColors = e.value;};
         customColors = customVisualsField.value;
 
+        new ConfigHeader(globalColorPanel, "------------------------------------------------------").textSize = 16;
+
         BoolField enabledParryColorField = new BoolField(globalColorPanel, "Custom Parry Color", "ParryColorEnabled", false);
         ConfigDivision colorDivision = new ConfigDivision(globalColorPanel, "ParryColorFieldDivision");
         enabledParryColorField.onValueChange += (BoolField.BoolValueChangeEvent e) => {parryProjectileColored = e.value; colorDivision.interactable = e.value;};
@@ -568,6 +600,9 @@ public class ModConfig
         EnumField<SpecialColorEnum> parrySpecialColorField = new EnumField<SpecialColorEnum>(colorDivision, "Parry Color Attribute", "parrySpecialColor", SpecialColorEnum.Default);
         parrySpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {parrySpecialColor = e.value;};
         parrySpecialColor = parrySpecialColorField.value;
+
+        new ConfigHeader(globalColorPanel, "------------------------------------------------------").textSize = 16;
+
         BoolField enabledShotgunHammerBeamColorField = new BoolField(globalColorPanel, "Custom Jackhammer Beam Color", "ShotgunHammerBeamColorEnabled", false);
         ConfigDivision colorDivision2 = new ConfigDivision(globalColorPanel, "ParryColorFieldDivision");
         enabledShotgunHammerBeamColorField.onValueChange += (BoolField.BoolValueChangeEvent e) => {jackhammerCustomBeamColor = e.value; colorDivision2.interactable = e.value;};
@@ -581,6 +616,7 @@ public class ModConfig
         shotgunHammerSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {jackhammerBeamSpecialColor = e.value;};
         jackhammerBeamSpecialColor = shotgunHammerSpecialColorField.value;
 
+        new ConfigHeader(globalColorPanel, "------------------------------------------------------").textSize = 16;
 
         BoolField muzzleFlashColorEnabledField = new BoolField(globalColorPanel, "Enable Muzzle Flash Color Changes", "muzzleFlashColorEnabled", true);
         muzzleFlashColorEnabledField.onValueChange += (BoolField.BoolValueChangeEvent e) => {colorMuzzleFlashes = e.value;};
@@ -607,6 +643,8 @@ public class ModConfig
         FloatField slowdownLengthField = new FloatField(globalHitstopPanel, "Slowdown Mult", "slowdownMult", 1.0f, 0.0f, 100.0f);
         slowdownLengthField.onValueChange += (FloatField.FloatValueChangeEvent e) => {slowdownMult = e.value;};
         slowdownMult = slowdownLengthField.value;
+
+        new ConfigHeader(globalHitstopPanel, "------------------------------------------------------").textSize = 16;
 
         FloatField jackhammerTruestopLengthField = new FloatField(globalHitstopPanel, "Jackhammer Truestop Mult Add", "jackhammerAddTimeStop", 0.0f, -100.0f, 100.0f);
         jackhammerTruestopLengthField.onValueChange += (FloatField.FloatValueChangeEvent e) => {jackhammerAddTimeStop = e.value;};

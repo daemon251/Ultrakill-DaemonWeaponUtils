@@ -24,12 +24,12 @@ public class Crosshairs
         OpenCircleTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "OpenCircle.png")}"));
         ClosedCrossTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "ClosedCross.png")}"));
         OpenCrossTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "OpenCross.png")}"));
-        GrenadeTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Grenade.png")}"));
-        CrossBorderTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "CrossBorder.png")}"));
-        Custom1Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom1.png")}"));
-        Custom2Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom2.png")}"));
-        Custom3Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom3.png")}"));
-        Custom4Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom4.png")}"));
+        GrenadeTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "GrenadeCross.png")}"));
+        CrossBorderTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "BorderCross.png")}"));
+        Custom1Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom1Cross.png")}"));
+        Custom2Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom2Cross.png")}"));
+        Custom3Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom3Cross.png")}"));
+        Custom4Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom4Cross.png")}"));
     }
 
     public static Texture2D ConvertCrosshairEnumToTexture(ModConfig.CrossHairEnum crosshairStyle)
