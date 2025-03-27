@@ -54,70 +54,87 @@ public class WeaponLocations
     }
     public static void UpdateWeaponLocations(GameObject weapon)
     {
-        ModConfig.WeaponDefaultLocations();
+       // ModConfig.WeaponDefaultLocations();
         int index = -1;
+        int middleHanded = 0;
+        if (MonoSingleton<PrefsManager>.Instance.GetInt("weaponHoldPosition") == 1 && (!(bool) (UnityEngine.Object) MonoSingleton<PowerUpMeter>.Instance || (double) MonoSingleton<PowerUpMeter>.Instance.juice <= 0.0))
+        {
+            middleHanded = 1;
+        }
         if (weapon.GetComponent<Revolver>() != null && weapon.GetComponent<Revolver>().wpos != null)
         {
             Revolver revolver = weapon.GetComponent<Revolver>();
-            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Piercer_Revolver) { index = 0; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Marksman_Revolver) { index = 1; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Sharpshooter_Revolver) { index = 2; }
-            revolver.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + ModConfig.weaponDefaultPositions[index].x + ModConfig.globalOffset.x,
-                                                        ModConfig.weaponOffsets[index].y + ModConfig.weaponDefaultPositions[index].y + ModConfig.globalOffset.y,
-                                                        ModConfig.weaponOffsets[index].z + ModConfig.weaponDefaultPositions[index].z + ModConfig.globalOffset.z);
-            //revolver.GetComponent<WeaponPos>().currentDefault = revolver.wpos.currentDefault; //doesnt do anything?
-            revolver.GetComponent<WeaponPos>().defaultRot = new Vector3(ModConfig.weaponAngles[index].x + ModConfig.weaponDefaultAngles[index].x + ModConfig.globalAngle.x,
-                                                                        ModConfig.weaponAngles[index].z + ModConfig.weaponDefaultAngles[index].y + ModConfig.globalAngle.z,
-                                                                        -ModConfig.weaponAngles[index].y + ModConfig.weaponDefaultAngles[index].z + -ModConfig.globalAngle.y);
-            revolver.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].z * ModConfig.weaponDefaultScales[index].x * ModConfig.globalScale.z,
-                                                                            ModConfig.weaponScales[index].y * ModConfig.weaponDefaultScales[index].y * ModConfig.globalScale.y,
-                                                                            ModConfig.weaponScales[index].x * ModConfig.weaponDefaultScales[index].z * ModConfig.globalScale.x);
+            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Piercer_Revolver) {index = 0;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Marksman_Revolver) {index = 1;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Sharpshooter_Revolver) {index = 2;}
 
-            revolver.transform.localPosition = revolver.wpos.currentDefault; //we have to set it ourselves... probably doesnt need to be on tick
+            Vector3 pos = ModConfig.revolverPosition[middleHanded];
+            Vector3 ang = ModConfig.revolverAng[middleHanded];
+            Vector3 size = ModConfig.shotgunSize[middleHanded];
+
+            if(revolver.altVersion) {pos = ModConfig.revolverAltPosition[middleHanded]; ang = ModConfig.revolverAltAng[middleHanded]; size = ModConfig.revolverAltSize[middleHanded];}
+
+            revolver.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + pos.x + ModConfig.globalOffset.x,
+                                                        ModConfig.weaponOffsets[index].y + pos.y + ModConfig.globalOffset.y,
+                                                        ModConfig.weaponOffsets[index].z + pos.z + ModConfig.globalOffset.z);
+            revolver.GetComponent<WeaponPos>().defaultRot = new Vector3(ModConfig.weaponAngles[index].x + ang.x + ModConfig.globalAngle.x,
+                                                                        ModConfig.weaponAngles[index].z + ang.y + ModConfig.globalAngle.z,
+                                                                        -ModConfig.weaponAngles[index].y + ang.z + -ModConfig.globalAngle.y);
+            revolver.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].z * size.x * ModConfig.globalScale.z,
+                                                                            ModConfig.weaponScales[index].y * size.y * ModConfig.globalScale.y,
+                                                                            ModConfig.weaponScales[index].x * size.z * ModConfig.globalScale.x);
+
+            revolver.transform.localPosition = revolver.wpos.currentDefault; 
             revolver.transform.localEulerAngles = revolver.wpos.defaultRot;
             revolver.transform.localScale = revolver.wpos.defaultScale;
         }
         if (weapon.GetComponent<Shotgun>() != null && weapon.GetComponent<Shotgun>().wpos != null)
         {
             Shotgun shotgun = weapon.GetComponent<Shotgun>();
-            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Core_Eject_Shotgun) { index = 3; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Pump_Charge_Shotgun) { index = 4; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Sawed_On_Shotgun) { index = 5; }
+            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Core_Eject_Shotgun) {index = 3;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Pump_Charge_Shotgun) {index = 4;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Sawed_On_Shotgun) {index = 5;}
 
-            shotgun.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + ModConfig.weaponDefaultPositions[index].x + ModConfig.globalOffset.x,
-                                                        ModConfig.weaponOffsets[index].y + ModConfig.weaponDefaultPositions[index].y + ModConfig.globalOffset.y,
-                                                        ModConfig.weaponOffsets[index].z + ModConfig.weaponDefaultPositions[index].z + ModConfig.globalOffset.z);
-            //revolver.GetComponent<WeaponPos>().currentDefault = revolver.wpos.currentDefault; //doesnt do anything?
-            shotgun.GetComponent<WeaponPos>().defaultRot = new Vector3(ModConfig.weaponAngles[index].x + ModConfig.weaponDefaultAngles[index].x + ModConfig.globalAngle.x,
-                                                                        ModConfig.weaponAngles[index].z + ModConfig.weaponDefaultAngles[index].y + ModConfig.globalAngle.z,
-                                                                        -ModConfig.weaponAngles[index].y + ModConfig.weaponDefaultAngles[index].z + -ModConfig.globalAngle.y);
-            shotgun.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].z * ModConfig.weaponDefaultScales[index].x * ModConfig.globalScale.z,
-                                                                            ModConfig.weaponScales[index].y * ModConfig.weaponDefaultScales[index].y * ModConfig.globalScale.y,
-                                                                            ModConfig.weaponScales[index].x * ModConfig.weaponDefaultScales[index].z * ModConfig.globalScale.x);
+            Vector3 pos = ModConfig.shotgunPosition[middleHanded];
+            Vector3 ang = ModConfig.shotgunAng[middleHanded];
+            Vector3 size = ModConfig.shotgunSize[middleHanded];
 
-            shotgun.transform.localPosition = shotgun.wpos.currentDefault; //we have to set it ourselves... probably doesnt need to be on tick
+            shotgun.wpos.currentDefault = new Vector3(  ModConfig.weaponOffsets[index].x + pos.x + ModConfig.globalOffset.x,
+                                                        ModConfig.weaponOffsets[index].y + pos.y + ModConfig.globalOffset.y,
+                                                        ModConfig.weaponOffsets[index].z + pos.z + ModConfig.globalOffset.z);
+            shotgun.GetComponent<WeaponPos>().defaultRot = new Vector3(ModConfig.weaponAngles[index].x + ang.x + ModConfig.globalAngle.x,
+                                                                        ModConfig.weaponAngles[index].z + ang.y + ModConfig.globalAngle.z,
+                                                                        -ModConfig.weaponAngles[index].y + ang.z + -ModConfig.globalAngle.y);
+            shotgun.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].z * size.x * ModConfig.globalScale.z,
+                                                                            ModConfig.weaponScales[index].y * size.y * ModConfig.globalScale.y,
+                                                                            ModConfig.weaponScales[index].x * size.z * ModConfig.globalScale.x);
+
+            shotgun.transform.localPosition = shotgun.wpos.currentDefault; 
             shotgun.transform.localEulerAngles = shotgun.wpos.defaultRot;
             shotgun.transform.localScale = shotgun.wpos.defaultScale;
         }
         if (weapon.GetComponent<ShotgunHammer>() != null && weapon.GetComponent<ShotgunHammer>().wpos != null)
         {
             ShotgunHammer shotgunHammer = weapon.GetComponent<ShotgunHammer>();
-            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Core_Eject_Shotgun) { index = 3; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Pump_Charge_Shotgun) { index = 4; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Sawed_On_Shotgun) { index = 5; }
+            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Core_Eject_Shotgun) {index = 3;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Pump_Charge_Shotgun) {index = 4;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Sawed_On_Shotgun) {index = 5;}
 
-            shotgunHammer.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + ModConfig.weaponDefaultPositions[index].x + ModConfig.globalOffset.x,
-                                                            ModConfig.weaponOffsets[index].y + ModConfig.weaponDefaultPositions[index].y + ModConfig.globalOffset.y,
-                                                            ModConfig.weaponOffsets[index].z + ModConfig.weaponDefaultPositions[index].z + ModConfig.globalOffset.z);
-            //revolver.GetComponent<WeaponPos>().currentDefault = revolver.wpos.currentDefault; //doesnt do anything?
-            shotgunHammer.GetComponent<WeaponPos>().defaultRot = new Vector3(ModConfig.weaponAngles[index].x + ModConfig.weaponDefaultAngles[index].x + ModConfig.globalAngle.x,
-                                                                                ModConfig.weaponAngles[index].z + ModConfig.weaponDefaultAngles[index].y + ModConfig.globalAngle.z,
-                                                                                -ModConfig.weaponAngles[index].y + ModConfig.weaponDefaultAngles[index].z + -ModConfig.globalAngle.y);
-            shotgunHammer.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].z * 1 * ModConfig.globalScale.z,
-                                                                                ModConfig.weaponScales[index].y * 1 * ModConfig.globalScale.y,
-                                                                                ModConfig.weaponScales[index].x * 1 * ModConfig.globalScale.x);
+            Vector3 pos = ModConfig.shotgunAltPosition[middleHanded];
+            Vector3 ang = ModConfig.shotgunAltAng[middleHanded];
+            Vector3 size = ModConfig.shotgunAltSize[middleHanded];
 
-            shotgunHammer.transform.localPosition = shotgunHammer.wpos.currentDefault; //we have to set it ourselves... probably doesnt need to be on tick
+            shotgunHammer.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + pos.x + ModConfig.globalOffset.x,
+                                                            ModConfig.weaponOffsets[index].y + pos.y + ModConfig.globalOffset.y,
+                                                            ModConfig.weaponOffsets[index].z + pos.z + ModConfig.globalOffset.z);
+            shotgunHammer.GetComponent<WeaponPos>().defaultRot = new Vector3(ModConfig.weaponAngles[index].x + ang.x + ModConfig.globalAngle.x,
+                                                                                ModConfig.weaponAngles[index].z + ang.y + ModConfig.globalAngle.z,
+                                                                                -ModConfig.weaponAngles[index].y + ang.z + -ModConfig.globalAngle.y);
+            shotgunHammer.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].z * size.x * ModConfig.globalScale.z,
+                                                                                ModConfig.weaponScales[index].y * size.y * ModConfig.globalScale.y,
+                                                                                ModConfig.weaponScales[index].x * size.z * ModConfig.globalScale.x);
+
+            shotgunHammer.transform.localPosition = shotgunHammer.wpos.currentDefault; 
             shotgunHammer.transform.localEulerAngles = shotgunHammer.wpos.defaultRot;
             shotgunHammer.transform.localScale = shotgunHammer.wpos.defaultScale;
         }
@@ -128,62 +145,72 @@ public class WeaponLocations
             else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Overheat_Nailgun) { index = 7; }
             else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Jumpstart_Nailgun) { index = 8; }
 
-            nailgun.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + ModConfig.weaponDefaultPositions[index].x + ModConfig.globalOffset.x,
-                                                        ModConfig.weaponOffsets[index].y + ModConfig.weaponDefaultPositions[index].y + ModConfig.globalOffset.y,
-                                                        ModConfig.weaponOffsets[index].z + ModConfig.weaponDefaultPositions[index].z + ModConfig.globalOffset.z);
-            //revolver.GetComponent<WeaponPos>().currentDefault = revolver.wpos.currentDefault; //doesnt do anything?
-            nailgun.GetComponent<WeaponPos>().defaultRot = new Vector3(-ModConfig.weaponAngles[index].y + 0 + -ModConfig.globalAngle.y,
-                                                                        ModConfig.weaponAngles[index].z + 0 + ModConfig.globalAngle.z,
-                                                                        -ModConfig.weaponAngles[index].x + 0 + -ModConfig.globalAngle.x);
-            nailgun.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].x * ModConfig.weaponDefaultScales[index].x * ModConfig.globalScale.x,
-                                                                            ModConfig.weaponScales[index].y * ModConfig.weaponDefaultScales[index].y * ModConfig.globalScale.y,
-                                                                            ModConfig.weaponScales[index].z * ModConfig.weaponDefaultScales[index].z * ModConfig.globalScale.z);
+            Vector3 pos = ModConfig.nailgunPosition[middleHanded];
+            Vector3 ang = ModConfig.nailgunAng[middleHanded];
+            Vector3 size = ModConfig.nailgunSize[middleHanded];
+            if(nailgun.altVersion) {pos = ModConfig.nailgunAltPosition[middleHanded]; ang = ModConfig.nailgunAltAng[middleHanded]; size = ModConfig.nailgunAltSize[middleHanded];}
 
-            nailgun.transform.localPosition = nailgun.wpos.currentDefault; //we have to set it ourselves... probably doesnt need to be on tick
+            nailgun.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + pos.x + ModConfig.globalOffset.x,
+                                                        ModConfig.weaponOffsets[index].y + pos.y + ModConfig.globalOffset.y,
+                                                        ModConfig.weaponOffsets[index].z + pos.z + ModConfig.globalOffset.z);
+            nailgun.GetComponent<WeaponPos>().defaultRot = new Vector3(-ModConfig.weaponAngles[index].y + ang.x + -ModConfig.globalAngle.y,
+                                                                        ModConfig.weaponAngles[index].z + ang.y + ModConfig.globalAngle.z,
+                                                                        -ModConfig.weaponAngles[index].x + ang.z + -ModConfig.globalAngle.x);
+            nailgun.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].x * size.x * ModConfig.globalScale.x,
+                                                                            ModConfig.weaponScales[index].y * size.y * ModConfig.globalScale.y,
+                                                                            ModConfig.weaponScales[index].z * size.z * ModConfig.globalScale.z);
+
+            nailgun.transform.localPosition = nailgun.wpos.currentDefault; 
             nailgun.transform.localEulerAngles = nailgun.wpos.defaultRot;
             nailgun.transform.localScale = nailgun.wpos.defaultScale;
         }
         if (weapon.GetComponent<Railcannon>() != null && weapon.GetComponent<Railcannon>().wpos != null)
         {
             Railcannon railcannon = weapon.GetComponent<Railcannon>();
-            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Electric_Railcannon) { index = 9; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Screwdriver) { index = 10; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Malicious_Railcannon) { index = 11; }
+            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Electric_Railcannon) {index = 9;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Screwdriver) {index = 10;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Malicious_Railcannon) {index = 11;}
 
-            railcannon.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + ModConfig.weaponDefaultPositions[index].x + ModConfig.globalOffset.x,
-                                                            ModConfig.weaponOffsets[index].y + ModConfig.weaponDefaultPositions[index].y + ModConfig.globalOffset.y,
-                                                            ModConfig.weaponOffsets[index].z + ModConfig.weaponDefaultPositions[index].z + ModConfig.globalOffset.z);
-            //revolver.GetComponent<WeaponPos>().currentDefault = revolver.wpos.currentDefault; //doesnt do anything?
-            railcannon.GetComponent<WeaponPos>().defaultRot = new Vector3(-ModConfig.weaponAngles[index].y + ModConfig.weaponDefaultAngles[index].x + -ModConfig.globalAngle.y,
-                                                                            ModConfig.weaponAngles[index].z + ModConfig.weaponDefaultAngles[index].y + ModConfig.globalAngle.z,
-                                                                            -ModConfig.weaponAngles[index].x + ModConfig.weaponDefaultAngles[index].z + -ModConfig.globalAngle.x);
-            railcannon.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].x * ModConfig.weaponDefaultScales[index].x * ModConfig.globalScale.x,
-                                                                                ModConfig.weaponScales[index].y * ModConfig.weaponDefaultScales[index].y * ModConfig.globalScale.y,
-                                                                                ModConfig.weaponScales[index].z * ModConfig.weaponDefaultScales[index].z * ModConfig.globalScale.z);
+            Vector3 pos = ModConfig.railcannonPosition[middleHanded];
+            Vector3 ang = ModConfig.railcannonAng[middleHanded];
+            Vector3 size = ModConfig.railcannonSize[middleHanded];
 
-            railcannon.transform.localPosition = railcannon.wpos.currentDefault; //we have to set it ourselves... probably doesnt need to be on tick
+            railcannon.wpos.currentDefault = new Vector3(   ModConfig.weaponOffsets[index].x + pos.x + ModConfig.globalOffset.x,
+                                                            ModConfig.weaponOffsets[index].y + pos.y + ModConfig.globalOffset.y,
+                                                            ModConfig.weaponOffsets[index].z + pos.z + ModConfig.globalOffset.z);
+            railcannon.GetComponent<WeaponPos>().defaultRot = new Vector3(  -ModConfig.weaponAngles[index].y + ang.x + -ModConfig.globalAngle.y,
+                                                                            ModConfig.weaponAngles[index].z + ang.y + ModConfig.globalAngle.z,
+                                                                            -ModConfig.weaponAngles[index].x + ang.z + -ModConfig.globalAngle.x);
+            railcannon.GetComponent<WeaponPos>().defaultScale = new Vector3(    ModConfig.weaponScales[index].x * size.x * ModConfig.globalScale.x,
+                                                                                ModConfig.weaponScales[index].y * size.y * ModConfig.globalScale.y,
+                                                                                ModConfig.weaponScales[index].z * size.z * ModConfig.globalScale.z);
+
+            railcannon.transform.localPosition = railcannon.wpos.currentDefault;
             railcannon.transform.localEulerAngles = railcannon.wpos.defaultRot;
             railcannon.transform.localScale = railcannon.wpos.defaultScale;
         }
         if (weapon.GetComponent<RocketLauncher>() != null && weapon.GetComponent<RocketLauncher>().wpos != null)
         {
             RocketLauncher rocketLauncher = weapon.GetComponent<RocketLauncher>();
-            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Freezeframe_Rocket_Launcher) { index = 12; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.SRS_Rocket_Launcher) { index = 13; }
-            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Firestarter_Rocket_Launcher) { index = 14; }
+            if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Freezeframe_Rocket_Launcher) {index = 12;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.SRS_Rocket_Launcher) {index = 13;}
+            else if (convertWeaponToWeaponEnum(weapon) == WeaponEnum.Firestarter_Rocket_Launcher) {index = 14;}
 
-            rocketLauncher.wpos.currentDefault = new Vector3(ModConfig.weaponOffsets[index].x + ModConfig.weaponDefaultPositions[index].x + ModConfig.globalOffset.x,
-                                                        ModConfig.weaponOffsets[index].y + ModConfig.weaponDefaultPositions[index].y + ModConfig.globalOffset.y,
-                                                        ModConfig.weaponOffsets[index].z + ModConfig.weaponDefaultPositions[index].z + ModConfig.globalOffset.z);
-            //revolver.GetComponent<WeaponPos>().currentDefault = revolver.wpos.currentDefault; //doesnt do anything?
-            rocketLauncher.GetComponent<WeaponPos>().defaultRot = new Vector3(-ModConfig.weaponAngles[index].y + ModConfig.weaponDefaultAngles[index].x + -ModConfig.globalAngle.y,
-                                                                                ModConfig.weaponAngles[index].z + ModConfig.weaponDefaultAngles[index].y + ModConfig.globalAngle.z,
-                                                                                -ModConfig.weaponAngles[index].x + ModConfig.weaponDefaultAngles[index].z + -ModConfig.globalAngle.x);
-            rocketLauncher.GetComponent<WeaponPos>().defaultScale = new Vector3(ModConfig.weaponScales[index].x * ModConfig.weaponDefaultScales[index].x * ModConfig.globalScale.x,
-                                                                                    ModConfig.weaponScales[index].y * ModConfig.weaponDefaultScales[index].y * ModConfig.globalScale.y,
-                                                                                    ModConfig.weaponScales[index].z * ModConfig.weaponDefaultScales[index].z * ModConfig.globalScale.z);
+            Vector3 pos = ModConfig.rocketLauncherPosition[middleHanded];
+            Vector3 ang = ModConfig.rocketLauncherAng[middleHanded];
+            Vector3 size = ModConfig.rocketLauncherSize[middleHanded];
 
-            rocketLauncher.transform.localPosition = rocketLauncher.wpos.currentDefault; //we have to set it ourselves... probably doesnt need to be on tick
+            rocketLauncher.wpos.currentDefault = new Vector3(   ModConfig.weaponOffsets[index].x + pos.x + ModConfig.globalOffset.x,
+                                                                ModConfig.weaponOffsets[index].y + pos.y + ModConfig.globalOffset.y,
+                                                                ModConfig.weaponOffsets[index].z + pos.z + ModConfig.globalOffset.z);
+            rocketLauncher.GetComponent<WeaponPos>().defaultRot = new Vector3(  -ModConfig.weaponAngles[index].y + ang.x + -ModConfig.globalAngle.y,
+                                                                                ModConfig.weaponAngles[index].z + ang.y + ModConfig.globalAngle.z,
+                                                                                -ModConfig.weaponAngles[index].x + ang.z + -ModConfig.globalAngle.x);
+            rocketLauncher.GetComponent<WeaponPos>().defaultScale = new Vector3(    ModConfig.weaponScales[index].x * size.x * ModConfig.globalScale.x,
+                                                                                    ModConfig.weaponScales[index].y * size.y * ModConfig.globalScale.y,
+                                                                                    ModConfig.weaponScales[index].z * size.z * ModConfig.globalScale.z);
+
+            rocketLauncher.transform.localPosition = rocketLauncher.wpos.currentDefault;
             rocketLauncher.transform.localEulerAngles = rocketLauncher.wpos.defaultRot;
             rocketLauncher.transform.localScale = rocketLauncher.wpos.defaultScale;
         }

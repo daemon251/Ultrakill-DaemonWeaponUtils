@@ -16,7 +16,7 @@ using Vector3 = UnityEngine.Vector3;
 public class ModConfig
 {
     public enum SpecialColorEnum {Default, RandomRainbow, TimeBasedRainbow, Confetti, PulseWhite, PulseBlack, HSVRandom, RGBRandom}
-    public static Vector3[] weaponDefaultPositionsRight = {  new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f),
+    /*public static Vector3[] weaponDefaultPositionsRight = {  new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f),
                                                         new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.42f, -0.60f, 1.49f),
                                                         new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
                                                         new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
@@ -38,46 +38,48 @@ public class ModConfig
                                                     new Vector3(0f, 91.5f, 20f), new Vector3(0f, 91.5f, 20f), new Vector3(0f, 91.5f, 20f),
                                                     new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
                                                     new Vector3(0f, 0.5f, 0f), new Vector3(0f, 0.5f, 0f), new Vector3(0f, 0.5f, 0f),
-                                                    new Vector3(5f, 5f, 0f), new Vector3(5f, 5f, 0f), new Vector3(5f, 5f, 0f)}; 
-
-    /*public static Vector3[] weaponDefaultPositionsLeft = {  new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f),
-                                                        new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.42f, -0.60f, 1.49f),
-                                                        new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                        new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                        new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f)};
-
-    public static Vector3[] weaponDefaultAnglesLeft = { new Vector3(0f, 92f, 20f), new Vector3(0f, 92f, 20f), new Vector3(0f, 92f, 20f),
-                                                    new Vector3(0f, 90f, 20f), new Vector3(0f, 90f, 20f), new Vector3(0f, 90f, 20f),
-                                                    new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                    new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                    new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f)};    */   
-
-
+                                                    new Vector3(5f, 5f, 0f), new Vector3(5f, 5f, 0f), new Vector3(5f, 5f, 0f)}; */
 
     public static string DefaultParentFolder = $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}";     
     public static Vector3 globalOffset = new Vector3(0,0,0);
-    public static Vector3[] weaponOffsets = new Vector3[15];     
-    public static Vector3[] weaponDefaultPositions = {  new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.5f, -0.7f, 1.49f),
-                                                        new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.42f, -0.60f, 1.49f),
-                                                        new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                        new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                        new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f)};
+    public static Vector3[] weaponOffsets = new Vector3[15];   
+
+    public static Vector3[] revolverPosition = {new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.09f, -0.90f, 1.49f)};
+    public static Vector3[] revolverAltPosition = {new Vector3(0.5f, -0.7f, 1.49f), new Vector3(0.09f, -0.90f, 1.49f)};
+    public static Vector3[] shotgunPosition = {new Vector3(0.42f, -0.60f, 1.49f), new Vector3(0.00f, -0.85f, 1.65f)};
+    public static Vector3[] shotgunAltPosition = {new Vector3(0.42f, -0.60f, 1.49f), new Vector3(-0.18f, -0.80f, 1.65f)};
+    public static Vector3[] nailgunPosition = {new Vector3(0f, 0f, 0f), new Vector3(-0.39f, -0.10f, 0.20f)};
+    public static Vector3[] nailgunAltPosition = {new Vector3(0f, 0f, 0f), new Vector3(-0.50f, -0.10f, 0.20f)};
+    public static Vector3[] railcannonPosition = {new Vector3(0f, 0f, 0f), new Vector3(-0.60f, -0.40f, 0.10f)};
+    public static Vector3[] rocketLauncherPosition = {new Vector3(0f, 0f, 0f), new Vector3(-0.375f, -0.15f, 0.20f)};
+
+    public static Vector3[] revolverAng = {new Vector3(0f, 90f, 20f), new Vector3(0f, 93f, 30f)};
+    public static Vector3[] revolverAltAng = {new Vector3(0f, 92f, 20f), new Vector3(0f, 93f, 25f)};
+    public static Vector3[] shotgunAng = {new Vector3(0f, 90f, 20f), new Vector3(0f, 91.5f, 20f)};
+    public static Vector3[] shotgunAltAng = {new Vector3(0f, 90f, 20f), new Vector3(0f, 90f, 25f)};
+    public static Vector3[] nailgunAng = {new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f)};
+    public static Vector3[] nailgunAltAng = {new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f)};
+    public static Vector3[] railcannonAng = {new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f)};
+    public static Vector3[] rocketLauncherAng = {new Vector3(0f, 0f, 0f), new Vector3(5f, 5f, 0f)};
+
+    public static Vector3[] revolverSize = {new Vector3(0.29f, 0.29f, 0.33f), new Vector3(0.29f, 0.29f, 0.33f)};
+    public static Vector3[] revolverAltSize = {new Vector3(0.30f, 0.30f, 0.40f), new Vector3(0.30f, 0.30f, 0.40f)};
+    public static Vector3[] shotgunSize = {new Vector3(0.29f, 0.29f, 0.33f), new Vector3(0.29f, 0.29f, 0.33f)};
+    public static Vector3[] shotgunAltSize = {new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)};
+    public static Vector3[] nailgunSize = {new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)};
+    public static Vector3[] nailgunAltSize = {new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)};
+    public static Vector3[] railcannonSize = {new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)};
+    public static Vector3[] rocketLauncherSize = {new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1.20f)};
+
+
 
     public static Vector3 globalScale = new Vector3(1f,1f,1f);
     public static Vector3[] weaponScales = new Vector3[15];     
-    public static Vector3[] weaponDefaultScales = { new Vector3(0.30f, 0.30f, 0.40f), new Vector3(0.30f, 0.30f, 0.40f), new Vector3(0.30f, 0.30f, 0.40f),
-                                                    new Vector3(0.29f, 0.29f, 0.33f), new Vector3(0.29f, 0.29f, 0.33f), new Vector3(0.29f, 0.29f, 0.33f), //shotgunHammer doesnt use this, its just 1s instead
-                                                    new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f),
-                                                    new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f),
-                                                    new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f), new Vector3(1f, 1f, 1f)};
+
 
     public static Vector3 globalAngle = new Vector3(0f,0f,0f);
     public static Vector3[] weaponAngles = new Vector3[15];     
-    public static Vector3[] weaponDefaultAngles = { new Vector3(0f, 92f, 20f), new Vector3(0f, 92f, 20f), new Vector3(0f, 92f, 20f),
-                                                    new Vector3(0f, 90f, 20f), new Vector3(0f, 90f, 20f), new Vector3(0f, 90f, 20f),
-                                                    new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                    new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f),
-                                                    new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 0f)};
+
     public enum CrossHairEnum {UltrakillBase, None, 
     //DefaultSmall, DefaultLarge, 
     ClosedCircle, OpenCircle, ClosedCross, OpenCross, Grenade, CrossBorder,
@@ -88,27 +90,6 @@ public class ModConfig
     public static Color[,] crosshairColors = new Color[5, 3];
     public static bool[,] keepCrosshairInfo = new bool[5, 3];
     public static float[,] crosshairOpacities = new float[5, 3];
-    public static void WeaponDefaultLocations()
-    {
-        int position = MonoSingleton<PrefsManager>.Instance.GetInt("weaponHoldPosition");
-        if(position == 0) //right
-        {
-            weaponDefaultPositions = weaponDefaultPositionsRight;
-            weaponDefaultAngles = weaponDefaultAnglesRight;
-        }
-        else if(position == 1) //middle
-        {
-            weaponDefaultPositions = weaponDefaultPositionsMiddle;
-            weaponDefaultAngles = weaponDefaultAnglesMiddle;
-        }
-        else if (position == 2) //left
-        {
-            //left just uses right but reverses stuff or smth idk
-            weaponDefaultPositions = weaponDefaultPositionsRight;
-            weaponDefaultAngles = weaponDefaultAnglesRight;
-        }
-        //size doesnt change
-    }
 
     public static void OpenFolder() {Application.OpenURL(Plugin.DefaultParentFolder);}
 
@@ -480,13 +461,13 @@ public class ModConfig
 
         if(i == 0)
         {
-            /*ColorField freezeframeRocketColorField = new ColorField(division, "Frozen Rocket Color (currently broken)", "FrozenRocketColor" + i, Color.white);
+            ColorField freezeframeRocketColorField = new ColorField(division, "Freeze Effect Color", "FrozenRocketColor" + i, Color.white);
             freezeframeRocketColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {freezeframeColor = e.value;};
             freezeframeColor = freezeframeRocketColorField.value; 
 
             EnumField<SpecialColorEnum> freezeframeRocketSpecialColorField = new EnumField<SpecialColorEnum>(division, "Frozen Rocket Color Attribute", "FrozenRocketSpecialColor" + i, SpecialColorEnum.Default);
             freezeframeRocketSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {freezeframeSpecialColor = e.value;};
-            freezeframeSpecialColor = freezeframeRocketSpecialColorField.value;*/
+            freezeframeSpecialColor = freezeframeRocketSpecialColorField.value;
         }
         else if(i == 1)
         {
@@ -519,7 +500,9 @@ public class ModConfig
 
     public static CrossHairEnum mainCrossHairEnum = CrossHairEnum.UltrakillBase;
     public static float mainCrossHairScale = 1f;
+    public static bool mainCrossHairKeepInfo = true;
     public static Color mainCrossHairColor = new Color();
+    public static float mainCrossHairOpacity = 1f;
 
     public static void CreateConfig()
     {
@@ -535,7 +518,7 @@ public class ModConfig
         ConfigPanel globalPositionPanel = new ConfigPanel(globalSettingsPanel, "Position / Scale / Angle", "globalPositionPanel");
         ConfigPanel globalColorPanel = new ConfigPanel(globalSettingsPanel, "Color", "globalColorPanel");
         ConfigPanel globalHitstopPanel = new ConfigPanel(globalSettingsPanel, "Hitstop", "globalHitstopPanel");
-        //ConfigPanel globalCrosshairPanel = new ConfigPanel(globalSettingsPanel, "Crosshair", "globalCrosshairPanel");
+        ConfigPanel globalCrosshairPanel = new ConfigPanel(globalSettingsPanel, "Base Crosshair Settings", "globalCrosshairPanel");
 
         FloatField xPosGlobalField = new FloatField(globalPositionPanel, "X Position Offset", "xPosGlobalOffset", 0.0f, -100f, 100f);
         xPosGlobalField.onValueChange += (FloatField.FloatValueChangeEvent e) => {globalOffset.x = e.value;}; 
@@ -651,8 +634,8 @@ public class ModConfig
         jackhammerAddTimeStop = jackhammerTruestopLengthField.value;
 
 
-        /*ConfigHeader crosshairWarningHeader = new ConfigHeader(globalCrosshairPanel, "May need to restart game to restore base game crosshair.");
-        warningHeader.textSize = 12;
+        ConfigHeader crosshairWarningHeader = new ConfigHeader(globalCrosshairPanel, "May need to restart game to restore base game crosshair. UltrakillBase will keep the base crosshair as default.");
+        crosshairWarningHeader.textSize = 12;
 
         EnumField<CrossHairEnum> crosshairStyleField = new EnumField<CrossHairEnum>(globalCrosshairPanel, "Crosshair Style", "mainCrosshairStyle", CrossHairEnum.UltrakillBase);
         ConfigDivision crosshairDivision = new ConfigDivision(globalCrosshairPanel, "mainCrosshairDivision");
@@ -663,9 +646,17 @@ public class ModConfig
         crosshairScaleField.onValueChange += (FloatField.FloatValueChangeEvent e) => {mainCrossHairScale = e.value;};
         mainCrossHairScale = crosshairScaleField.value;
 
+        BoolField crosshairKeepInfoField = new BoolField(crosshairDivision, "Keep Crosshair Info", "keepMainCrosshairInfo", true);
+        crosshairKeepInfoField.onValueChange += (BoolField.BoolValueChangeEvent e) => {mainCrossHairKeepInfo = e.value;};
+        mainCrossHairKeepInfo = crosshairKeepInfoField.value;
+
         ColorField crosshairColorField = new ColorField(crosshairDivision, "Crosshair Color", "mainCrosshairColor", Color.white);
         crosshairColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {mainCrossHairColor = e.value;};
-        mainCrossHairColor = crosshairColorField.value;*/
+        mainCrossHairColor = crosshairColorField.value;
+
+        FloatField crosshairOpacityField = new FloatField(crosshairDivision, "Crosshair Opacity", "mainCrosshairOpacity", 1f, 0f, 1f);
+        crosshairOpacityField.onValueChange += (FloatField.FloatValueChangeEvent e) => {mainCrossHairOpacity = e.value;};
+        mainCrossHairOpacity = crosshairOpacityField.value;
 
 
 

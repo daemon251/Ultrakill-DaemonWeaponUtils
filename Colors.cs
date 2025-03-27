@@ -12,9 +12,9 @@ public class Colors
     //public static Texture2D DefaultSmallTexture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
     //public static Texture2D DefaultLargeTexture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
     
-    public static Texture2D BigFlashTexture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
-    public static Texture2D SmallFlashTexture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
-    public static Texture2D PiercerAltChargeTexture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
+    public static Texture2D BigFlashTexture = new Texture2D(0, 0, TextureFormat.RGBAFloat, false);
+    public static Texture2D SmallFlashTexture = new Texture2D(0, 0, TextureFormat.RGBAFloat, false);
+    public static Texture2D PiercerAltChargeTexture = new Texture2D(0, 0, TextureFormat.RGBAFloat, false);
     
     public static Color HSVToColor(float h, float S, float V) //copied from internet somewhere
     {    
@@ -115,8 +115,8 @@ public class Colors
         else if(sc == ModConfig.SpecialColorEnum.Confetti) {return GetRandomRainbowColor();}
         else if(sc == ModConfig.SpecialColorEnum.PulseWhite) {return GetCurrentPulseColor(settingColor, Color.white);}
         else if(sc == ModConfig.SpecialColorEnum.PulseBlack) {return GetCurrentPulseColor(settingColor, Color.black);}
-        else if(sc == ModConfig.SpecialColorEnum.HSVRandom) {return GetRandomHSV();}
-        else if(sc == ModConfig.SpecialColorEnum.RGBRandom) {return GetRandomRGB();}
+        else if(sc == ModConfig.SpecialColorEnum.HSVRandom && (currentColor == settingColor || currentColor == null || currentColor == new Color(1f, 1f, 1f) || firstTime == true)) {return GetRandomHSV();}
+        else if(sc == ModConfig.SpecialColorEnum.RGBRandom && (currentColor == settingColor || currentColor == null || currentColor == new Color(1f, 1f, 1f) || firstTime == true)) {return GetRandomRGB();}
         else {return currentColor;}
     }
 
@@ -152,7 +152,8 @@ public class Colors
     public static Color GetRandomRGB()
     {
         System.Random rand = new System.Random();
-        return new Color(Convert.ToSingle(rand.NextDouble()), Convert.ToSingle(rand.NextDouble()), Convert.ToSingle(rand.NextDouble()));
+        Color color = new Color(Convert.ToSingle(rand.NextDouble()), Convert.ToSingle(rand.NextDouble()), Convert.ToSingle(rand.NextDouble()));
+        return color;
     }
 
     public static void LoadImages()
@@ -160,6 +161,10 @@ public class Colors
         BigFlashTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "BigFlash.png")}"));
         SmallFlashTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "SmallFlash.png")}"));
         PiercerAltChargeTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "PiercerCharge.png")}"));
+
+        BigFlashTexture.filterMode = FilterMode.Point;
+        SmallFlashTexture.filterMode = FilterMode.Point;
+        PiercerAltChargeTexture.filterMode = FilterMode.Point;
     }
     public static void ColorGameObject(GameObject gameObject, Color color)
     {
@@ -414,6 +419,28 @@ public class Colors
                 GameObject muzzleFlashReal = muzzleFlash.transform.GetChild(0).gameObject;
                 SpriteRenderer muzzleFlashSprite = muzzleFlashReal.GetComponent<SpriteRenderer>();
                 muzzleFlashSprite.color = color;
+
+
+
+                GameObject FreezeEffect = grenade.freezeEffect;
+                GameObject Sprite = FreezeEffect.transform.GetChild(0).gameObject;
+                GameObject RealSprite = Sprite.transform.GetChild(0).gameObject;
+
+                Sprite.GetComponent<SpriteGetVariationColor>().enabled = false; //prevents auto color switch
+
+                Color freezeframeColor = ModConfig.freezeframeColor;
+                freezeframeColor = SpecialColorLogic(ModConfig.freezeframeSpecialColor, RealSprite.GetComponent<SpriteRenderer>().color, freezeframeColor);
+
+                RealSprite.GetComponent<SpriteRenderer>().color = freezeframeColor;
+                GameObject RealSprite1 = RealSprite.transform.GetChild(0).gameObject;
+                GameObject RealSprite2 = RealSprite.transform.GetChild(1).gameObject;
+                GameObject RealSprite3 = RealSprite.transform.GetChild(2).gameObject;
+                GameObject RealSprite4 = RealSprite.transform.GetChild(3).gameObject;
+
+                RealSprite1.GetComponent<SpriteRenderer>().color = freezeframeColor;
+                RealSprite2.GetComponent<SpriteRenderer>().color = freezeframeColor;
+                RealSprite3.GetComponent<SpriteRenderer>().color = freezeframeColor;
+                RealSprite4.GetComponent<SpriteRenderer>().color = freezeframeColor;
             }
         }
         for(int i = 0; i < harpoons.Count; i++)
@@ -649,11 +676,11 @@ public class Colors
         float width = 1f;
         if(revolverBeam.sourceWeapon.GetComponent<Revolver>() != null)
         {
-            if     (revolverBeam.sourceWeapon.GetComponent<Revolver>().gunVariation == 0) 
+            if(revolverBeam.sourceWeapon.GetComponent<Revolver>().gunVariation == 0) 
             {
                 variation = 0;
                 color = ModConfig.revolverBeamColors[variation];
-                if(revolverBeam.maxHitsPerTarget > 2 ) {color = ModConfig.piercerAltBeamColor;}
+                if(revolverBeam.maxHitsPerTarget > 2) {color = ModConfig.piercerAltBeamColor;}
             }
             else if(revolverBeam.sourceWeapon.GetComponent<Revolver>().gunVariation == 1) 
             {
@@ -670,7 +697,7 @@ public class Colors
             if(changeWidth == true) 
             {
                 width = ModConfig.revolverBeamWidths[variation];
-                if(revolverBeam.maxHitsPerTarget > 2 ) {width *= ModConfig.piercerAltBeamWidth;}
+                if(revolverBeam.maxHitsPerTarget > 2 && revolverBeam.sourceWeapon.GetComponent<Revolver>().gunVariation == 0) {width *= ModConfig.piercerAltBeamWidth;}
                 else if(revolverBeam.ricochetAmount > 0 || revolverBeam.hasBeenRicocheter) {width *= ModConfig.sharpshooterAltBeamWidth;}
             }
 
@@ -929,50 +956,6 @@ public class Colors
         }
     }
 
-    /*[HarmonyPatch(typeof(SecondaryRevolver), "Shoot")]
-    public class SecondaryRevolverShootPatch
-    {
-        [HarmonyPostfix]
-        private static void Postfix(SecondaryRevolver __instance)
-        {
-            if(__instance?.secBeamPoint == null) {return;}
-            HandleBeamColoring(__instance.secBeamPoint.GetComponent<LineRenderer>(), __instance.secBeamPoint.GetComponent<RevolverBeam>(), false, Color.blue);
-        }
-    }*/
-
-    [HarmonyPatch(typeof(Grenade), "FixedUpdate")]
-    public class GrenadeFixedUpdatePatch
-    {
-        [HarmonyPostfix]
-        public static void Postfix()
-        {
-            if(ModConfig.customColors == false || Plugin.modEnabled == false) {return;}
-            /*foreach(Grenade grenade in grenades)
-            {
-                if(grenade.name == "Rocket(Clone)")
-                {
-                    GameObject FreezeEffect = grenade.freezeEffect;
-                    GameObject Sprite = FreezeEffect.transform.GetChild(0).gameObject;
-                    GameObject RealSprite = Sprite.transform.GetChild(0).gameObject;
-                    Color freezeframeColor = ModConfig.freezeframeColor;
-                    freezeframeColor = SpecialColorLogic(ModConfig.freezeframeSpecialColor, RealSprite.GetComponent<SpriteRenderer>().color, freezeframeColor);
-
-                    RealSprite.GetComponent<SpriteRenderer>().color = freezeframeColor;
-
-                    GameObject RealSprite1 = RealSprite.transform.GetChild(0).gameObject;
-                    GameObject RealSprite2 = RealSprite.transform.GetChild(1).gameObject;
-                    GameObject RealSprite3 = RealSprite.transform.GetChild(2).gameObject;
-                    GameObject RealSprite4 = RealSprite.transform.GetChild(3).gameObject;
-
-                    RealSprite1.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                    RealSprite2.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                    RealSprite3.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                    RealSprite4.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                }
-            }*/
-        }
-    }
-
     public static Texture2D ColoredPiercerAltTexture = null;
     public static Color LastPiercerAltTextureColor = Color.white;
     public static void MakeColoredPiercerAltTexture(Color color)
@@ -1140,37 +1123,16 @@ public class Colors
             }
         }
     }
-    
+
     [HarmonyPatch(typeof(RocketLauncher), "Update")]
     public class RocketLauncherUpdatePatch()
     {
         [HarmonyPostfix]
         private static void Postfix()
         {
-            /*foreach(Grenade grenade in grenades)
-            {
-                if(grenade.name == "Rocket(Clone)")
-                {
-                    GameObject FreezeEffect = grenade.transform.GetChild(5).gameObject;
-                    GameObject Sprite = FreezeEffect.transform.GetChild(0).gameObject;
-                    GameObject RealSprite = Sprite.transform.GetChild(0).gameObject;
-                    Color freezeframeColor = ModConfig.freezeframeColor;
-                    freezeframeColor = SpecialColorLogic(ModConfig.freezeframeSpecialColor, RealSprite.GetComponent<SpriteRenderer>().color, freezeframeColor);
-                    RealSprite.GetComponent<SpriteRenderer>().color = freezeframeColor;
-
-                    GameObject RealSprite1 = RealSprite.transform.GetChild(0).gameObject;
-                    GameObject RealSprite2 = RealSprite.transform.GetChild(1).gameObject;
-                    GameObject RealSprite3 = RealSprite.transform.GetChild(2).gameObject;
-                    GameObject RealSprite4 = RealSprite.transform.GetChild(3).gameObject;
-
-                    RealSprite1.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                    RealSprite2.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                    RealSprite3.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                    RealSprite4.GetComponent<SpriteRenderer>().color = freezeframeColor;
-                }
-            }*/
+            if(Plugin.weapon == null || Plugin.weapon.GetComponent<RocketLauncher>() == null) {return;}
             RocketLauncher rl = Plugin.weapon.GetComponent<RocketLauncher>();
-            if(ModConfig.customColors == false) {return;}
+            if(ModConfig.customColors == false || Plugin.modEnabled == false) {return;}
             for (int index = 0; index < rl.variationColorables.Length; ++index)
             {
                 if(ModConfig.enableColors[4,0] == true && rl.variation == 0)

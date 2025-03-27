@@ -18,8 +18,6 @@ public class Crosshairs
     public static Texture2D Custom4Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
     public static void LoadImages()
     {
-        //DefaultSmallTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "DefaultSmall.png")}"));
-        //DefaultLargeTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "DefaultLarge.png")}"));
         ClosedCircleTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "ClosedCircle.png")}"));
         OpenCircleTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "OpenCircle.png")}"));
         ClosedCrossTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "ClosedCross.png")}"));
@@ -30,6 +28,50 @@ public class Crosshairs
         Custom2Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom2Cross.png")}"));
         Custom3Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom3Cross.png")}"));
         Custom4Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom4Cross.png")}"));
+    }
+
+    public static void RenderBaseCrosshair()
+    {
+        Color color3 = MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color;
+        if(ModConfig.mainCrossHairEnum == ModConfig.CrossHairEnum.UltrakillBase) {MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color = new Color(color3.r, color3.g, color3.b, 1f); return;}
+        if(Plugin.IsMenu() == true) 
+        {
+            //default behavior better than nothing
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color = new Color(color3.r, color3.g, color3.b, 1f);
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(4).gameObject.SetActive(true);
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(5).gameObject.SetActive(true);
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(6).gameObject.SetActive(true);
+            return;
+        }
+        //disable base crosshair
+
+        Color color2 = MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color;
+        MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color = new Color(color2.r, color2.g, color2.b, 0f);
+
+        if(ModConfig.mainCrossHairEnum == ModConfig.CrossHairEnum.None) {return;}
+
+        if(MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(4).gameObject.activeSelf == true && ModConfig.mainCrossHairKeepInfo == false)
+        {
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(4).gameObject.SetActive(false);
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(5).gameObject.SetActive(false);
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(6).gameObject.SetActive(false);
+        }
+        else if(MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(4).gameObject.activeSelf == false && ModConfig.mainCrossHairKeepInfo == true)
+        {
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(4).gameObject.SetActive(true);
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(5).gameObject.SetActive(true);
+            MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(6).gameObject.SetActive(true);
+        }
+        //MonoSingleton<StatsManager>.Instance.crosshair.transform.parent.gameObject.SetActive(false);
+
+        Texture2D tex = ConvertCrosshairEnumToTexture(ModConfig.mainCrossHairEnum);
+        if(tex == null) {return;} //case None
+
+        float x = Screen.width / 2;
+        float y = Screen.height / 2;
+        float width = (ModConfig.mainCrossHairScale / 4f) * tex.width;
+        float height = (ModConfig.mainCrossHairScale / 4f) * tex.height;
+        UnityEngine.GUI.DrawTexture(new Rect(x - width / 2, y - height / 2, width, height), tex, ScaleMode.StretchToFill, true, 0, ModConfig.mainCrossHairColor, 0, 0);
     }
 
     public static Texture2D ConvertCrosshairEnumToTexture(ModConfig.CrossHairEnum crosshairStyle)
@@ -102,7 +144,7 @@ public class Crosshairs
 
     public static void DrawCrosshair(int i, int j)
     {
-        if(i > 5) {return;}
+        if(i > 5 || i < 0) {RenderBaseCrosshair(); return;}
         if (MonoSingleton<StatsManager>.Instance == null ||
             MonoSingleton<StatsManager>.Instance.crosshair == null ||
             MonoSingleton<StatsManager>.Instance.crosshair.transform == null ||
@@ -115,7 +157,7 @@ public class Crosshairs
         crosshairColor = new Color(crosshairColor.r, crosshairColor.g, crosshairColor.b, ModConfig.crosshairOpacities[i, j]);
 
         Texture2D tex = ConvertCrosshairEnumToTexture(crosshairStyle);
-        if(tex == null) {return;}
+        if(tex == null) {RenderBaseCrosshair(); return;}
 
         if(Plugin.IsMenu() == true) 
         {
