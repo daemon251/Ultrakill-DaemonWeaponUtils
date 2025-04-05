@@ -181,10 +181,13 @@ public class ModConfig
     public static bool coinSettingsToggle = false;
     public static Color marksmanCoinChargedColor = new Color();
     public static SpecialColorEnum marksmanCoinChargedSpecialColor = SpecialColorEnum.Default;
+    public static Color marksmanCoinFlashColor = new Color();
+    public static SpecialColorEnum marksmanCoinFlashSpecialColor = SpecialColorEnum.Default;
     public static Color marksmanCoinChargingColor = new Color();
     public static Color coinColor = new Color();
     public static Color coinTrailColor = new Color();
-    public static SpecialColorEnum coinSpecialColor = SpecialColorEnum.Default;
+    public static SpecialColorEnum coinTrailSpecialColor = SpecialColorEnum.Default;
+    public static SpecialColorEnum coinEntitySpecialColor = SpecialColorEnum.Default;
     public static bool[,] enableColors = new bool[5, 3];
     public static float[] revolverBeamWidths = new float[3];
     public static float piercerAltBeamWidth = new float();
@@ -192,10 +195,6 @@ public class ModConfig
     public static Color piercerChargeEffectColor = new Color();
     public static SpecialColorEnum piercerChargeEffectSpecialColor = SpecialColorEnum.Default;
 
-    //GENERAL: beam color
-    //PIERCER: charge color, battery colors
-    //MARKSMAN: coin icon colors, coin color
-    //SHARPSHOOTER: none
     public static void CreateRevolverFields(ConfigPanel cp, int i)
     {
         ConfigPanel colorPanel = new ConfigPanel(cp, "Color", "RevolverColorPanel" + i);
@@ -262,13 +261,29 @@ public class ModConfig
             customCoinColorsField.onValueChange += (BoolField.BoolValueChangeEvent e) => {coinSettingsToggle = e.value; coinDivision.interactable = e.value;};
             coinSettingsToggle = customCoinColorsField.value; coinDivision.interactable = customCoinColorsField.value;
 
-            ColorField coinColorField = new ColorField(coinDivision, "Coin Color", "CoinColor" + i, Color.white);
+            ColorField coinColorField = new ColorField(coinDivision, "Coin Entity Color", "CoinColor" + i, Color.white);
             coinColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {coinColor = e.value;};
             coinColor = coinColorField.value;
+
+            EnumField<SpecialColorEnum> revolverCoinSpecialColorField = new EnumField<SpecialColorEnum>(coinDivision, "Coin Entity Color Attribute", "CoinEntitySpecialColor" + i, SpecialColorEnum.Default);
+            revolverCoinSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {coinEntitySpecialColor = e.value;};
+            coinEntitySpecialColor = revolverCoinSpecialColorField.value;
 
             ColorField coinTrailColorField = new ColorField(coinDivision, "Coin Trail Color", "CoinTrailColor" + i, Color.white);
             coinTrailColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {coinTrailColor = e.value;};
             coinTrailColor = coinTrailColorField.value;
+
+            EnumField<SpecialColorEnum> revolverCoinTrailSpecialColorField = new EnumField<SpecialColorEnum>(coinDivision, "Coin Trail Color Attribute", "CoinTrailSpecialColor" + i, SpecialColorEnum.Default);
+            revolverCoinTrailSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {coinTrailSpecialColor = e.value;};
+            coinTrailSpecialColor = revolverCoinTrailSpecialColorField.value;
+
+            ColorField coinFlashColorField = new ColorField(coinDivision, "Coin Flash Color", "CoinFlashColor" + i, Color.white);
+            coinFlashColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {marksmanCoinFlashColor = e.value;};
+            marksmanCoinFlashColor = coinFlashColorField.value;
+
+            EnumField<SpecialColorEnum> revolverCoinFlashSpecialColorField = new EnumField<SpecialColorEnum>(coinDivision, "Coin Flash Color Attribute", "CoinFlashSpecialColor" + i, SpecialColorEnum.Default);
+            revolverCoinFlashSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {marksmanCoinFlashSpecialColor = e.value;};
+            marksmanCoinFlashSpecialColor = revolverCoinFlashSpecialColorField.value;
 
             ColorField coinChargedColorField = new ColorField(coinDivision, "HUD Coin Charged Color", "CoinChargedColor" + i, Color.white);
             coinChargedColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {marksmanCoinChargedColor = e.value;};
@@ -277,10 +292,6 @@ public class ModConfig
             EnumField<SpecialColorEnum> revolverCoinChargedSpecialColorField = new EnumField<SpecialColorEnum>(coinDivision, "HUD Coin Charged Color Attribute", "CoinChargedSpecialColor" + i, SpecialColorEnum.Default);
             revolverCoinChargedSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {marksmanCoinChargedSpecialColor = e.value;};
             marksmanCoinChargedSpecialColor = revolverCoinChargedSpecialColorField.value;
-
-            EnumField<SpecialColorEnum> revolverCoinSpecialColorField = new EnumField<SpecialColorEnum>(coinDivision, "Coin Entity Color Attribute", "CoinEntitySpecialColor" + i, SpecialColorEnum.Default);
-            revolverCoinSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {coinSpecialColor = e.value;};
-            coinSpecialColor = revolverCoinSpecialColorField.value;
 
             ColorField coinChargingColorField = new ColorField(coinDivision, "HUD Coin Charging Color", "CoinChargingColor" + i, Color.white);
             coinChargingColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {marksmanCoinChargingColor = e.value;};
@@ -305,11 +316,6 @@ public class ModConfig
     public static SpecialColorEnum coreEjectSpecialColor = SpecialColorEnum.Default;
     public static Color coreEjectExplosionColor = new Color();
     
-
-    //GENERAL: projectile color
-    //CORE EJECT: projectile color
-    //PUMP CHARGE: explosion color
-    //SAWED-ON: none
     public static void CreateShotgunFields(ConfigPanel cp, int i)
     {
         ConfigPanel colorPanel = new ConfigPanel(cp, "Color", "ShotgunColorPanel" + i);
@@ -353,10 +359,6 @@ public class ModConfig
 
     public static Color[] nailgunNailColors = new Color[3];
 
-    //GENERAL: projectile color
-    //ATTRACTOR: 
-    //OVERHEAT: 
-    //JUMPSTART: 
     public static void CreateNailgunFields(ConfigPanel cp, int i)
     {
         ConfigPanel colorPanel = new ConfigPanel(cp, "Color", "NailgunColorPanel" + i);
@@ -384,10 +386,6 @@ public class ModConfig
     public static float[] railcannonBeamWidths = new float[3];
     public static bool electricRailcannonEffectColorChange = true;
 
-    //GENERAL: beam color
-    //ELECTRIC: none
-    //SCREWDRIVER: none
-    //MALICIOUS: none
     public static void CreateRailcannonFields(ConfigPanel cp, int i)
     {
         ConfigPanel colorPanel = new ConfigPanel(cp, "Color", "railcannonColorPanel" + i);
@@ -433,10 +431,6 @@ public class ModConfig
     public static Color cannonballColor = new Color();
     public static SpecialColorEnum cannonballSpecialColor = SpecialColorEnum.Default;
 
-    //GENERAL: projectile color
-    //FREEZEFRAME: freeze color
-    //SRS: none
-    //FIRESTARTER: none
     public static void CreateRocketLauncherFields(ConfigPanel cp, int i)
     {
         ConfigPanel colorPanel = new ConfigPanel(cp, "Color", "RocketLauncherColorPanel" + i);

@@ -199,20 +199,7 @@ public class Colors
 
     public static void ColorProjectiles()
     {
-        //this still isnt very efficent but it's miles better than before
         if(ModConfig.customColors == false || Plugin.modEnabled == false) {return;}
-        //GameObject[] gameObjects = UnityEngine.Object.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //this eats some performance
-        //List<Projectile> projectilesNew = new List<Projectile>();
-        //List<Harpoon> harpoonsNew = new List<Harpoon>();
-        //List<Nail> nailsNew = new List<Nail>();
-        /*for(int i = 0; i < gameObjects.Length; i++)
-        {
-            GameObject go = gameObjects[i];
-            if(go == null) {continue;}
-            //else if(go.GetComponent<Harpoon>() != null) {harpoonsNew.Add(go.GetComponent<Harpoon>());}
-            //else if(go.GetComponent<Nail>() != null) {nailsNew.Add(go.GetComponent<Nail>());}
-            //else if(go.GetComponent<Projectile>() != null) {projectilesNew.Add(go.GetComponent<Projectile>());}
-        }*/
 
         for(int i = 0; i < projectiles.Count; i++)
         {
@@ -600,17 +587,17 @@ public class Colors
         }
         foreach(Coin coin in MonoSingleton<CoinList>.Instance.revolverCoinsList)
         {
-            if(ModConfig.coinSettingsToggle == false) {break;}
+            if(ModConfig.coinSettingsToggle == false || ModConfig.enableColors[0, 1] == false) {break;}
             Color coinColor = ModConfig.coinColor;
             Color trailColor = ModConfig.coinTrailColor;
 
             MeshRenderer componentMesh;
             Color currentCoinColor = new Color(1f, 1f, 1f);
-            if (coin.TryGetComponent<MeshRenderer>(out componentMesh) && (bool) (UnityEngine.Object) componentMesh.material && componentMesh.material.HasProperty("_Color"))
+            if (coin.transform.GetChild(0).gameObject.TryGetComponent<MeshRenderer>(out componentMesh) && (bool) (UnityEngine.Object) componentMesh.material && componentMesh.material.HasProperty("_Color"))
             {
                 currentCoinColor = componentMesh.material.GetColor("_Color");
             }
-            coinColor = SpecialColorLogic(ModConfig.coinSpecialColor, currentCoinColor, coinColor);
+            coinColor = SpecialColorLogic(ModConfig.coinEntitySpecialColor, currentCoinColor, coinColor);
 
             TrailRenderer componentTrail;
             Color currentCoinTrailColor = new Color(1f, 1f, 1f);
@@ -618,11 +605,11 @@ public class Colors
             {
                 currentCoinTrailColor = componentTrail.startColor;
             }
-            trailColor = SpecialColorLogic(ModConfig.coinSpecialColor, currentCoinTrailColor, trailColor);
+            trailColor = SpecialColorLogic(ModConfig.coinTrailSpecialColor, currentCoinTrailColor, trailColor);
 
             //copied from projectile parry code
             MeshRenderer component2;
-            if (coin.TryGetComponent<MeshRenderer>(out component2) && (bool) (UnityEngine.Object) component2.material && component2.material.HasProperty("_Color"))
+            if (coin.transform.GetChild(0).gameObject.TryGetComponent<MeshRenderer>(out component2) && (bool) (UnityEngine.Object) component2.material && component2.material.HasProperty("_Color"))
             {
                 component2.material.SetColor("_Color", coinColor);
             }
@@ -641,6 +628,15 @@ public class Colors
                 });
                 component3.colorGradient = gradient;
             }
+
+            if(coin.transform.childCount > 2)
+            {
+                SpriteRenderer sr = coin.transform.GetChild(2).transform.GetChild(0).transform.GetChild(0).GetComponent<SpriteRenderer>();
+                sr.color = SpecialColorLogic(ModConfig.marksmanCoinFlashSpecialColor, sr.color, ModConfig.marksmanCoinFlashColor);
+                Sprite newSprite = Sprite.Create(SmallFlashTexture, new Rect(0, 0, SmallFlashTexture.width, SmallFlashTexture.height), new Vector2(0.5f, 0.5f));
+                sr.sprite = newSprite;
+            }
+
         }
         for(int i = 0; i < revolverBeams.Count; i++)
         {
@@ -831,21 +827,52 @@ public class Colors
             if(ModConfig.customColors == false) {return;}
             if(Plugin.modEnabled == false) {return;}
 
+            //slightly inefficent
             projectiles = (UnityEngine.Object.FindObjectsOfType(typeof(Projectile)) as Projectile[]).ToList<Projectile>();
         }
     }
 
-    [HarmonyPatch(typeof(Nailgun), "Shoot")]
-    public class NailgunShootPatch
+    [HarmonyPatch(typeof(Nail), "Awake")]
+    public class NailAwakePatch
     {
         [HarmonyPostfix]
-        private static void Postfix()
+        private static void Postfix(Nail __instance)
         {
-            nails = (UnityEngine.Object.FindObjectsOfType(typeof(Nail)) as Nail[]).ToList<Nail>();
+            nails.Add(__instance);
+        }
+    }
+    
+    [HarmonyPatch(typeof(Nail), "OnDestroy")]
+    public class NailDestroyPatch
+    {
+        [HarmonyPostfix]
+        private static void Postfix(Nail __instance)
+        {
+            nails.Remove(__instance);
         }
     }
 
-    [HarmonyPatch(typeof(Railcannon), "Shoot")]
+    [HarmonyPatch(typeof(Harpoon), "Start")]
+    public class HarpoonStartPatch
+    {
+        [HarmonyPostfix]
+        private static void Postfix(Harpoon __instance)
+        {
+            harpoons.Add(__instance);
+        }
+    }
+    
+    [HarmonyPatch(typeof(Harpoon), "OnDestroy")]
+    public class HarpoonDestroyPatch
+    {
+        [HarmonyPostfix]
+        private static void Postfix(Harpoon __instance)
+        {
+            harpoons.Remove(__instance);
+        }
+    }
+
+    /*[HarmonyPatch(typeof(Railcannon), "Shoot")]
     public class RailcannonShootPatch
     {
         [HarmonyPostfix]
@@ -853,7 +880,7 @@ public class Colors
         {
             harpoons = (UnityEngine.Object.FindObjectsOfType(typeof(Harpoon)) as Harpoon[]).ToList<Harpoon>();
         }
-    }
+    }*/
 
     [HarmonyPatch(typeof(Shotgun), "ShootSinks")]
     public class ShotgunShootSinksPatch
@@ -891,6 +918,7 @@ public class Colors
             if(Plugin.modEnabled == false) {return;}
             if(ModConfig.parryProjectileColored == false) {return;}
 
+            //slightly inefficent
             projectiles = (UnityEngine.Object.FindObjectsOfType(typeof(Projectile)) as Projectile[]).ToList<Projectile>();
 
             Color currentColor = new Color(1f, 1f, 1f); //first tick its active, of course its the default color
