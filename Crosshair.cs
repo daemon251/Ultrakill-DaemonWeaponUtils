@@ -16,6 +16,12 @@ public class Crosshairs
     public static Texture2D Custom2Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
     public static Texture2D Custom3Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
     public static Texture2D Custom4Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
+    public static Texture2D Custom5Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
+    public static Texture2D Custom6Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
+    public static Texture2D Custom7Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
+    public static Texture2D Custom8Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
+    public static Texture2D Custom9Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
+    public static Texture2D Custom10Texture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
     public static void LoadImages()
     {
         ClosedCircleTexture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "ClosedCircle.png")}"));
@@ -28,6 +34,12 @@ public class Crosshairs
         Custom2Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom2Cross.png")}"));
         Custom3Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom3Cross.png")}"));
         Custom4Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom4Cross.png")}"));
+        Custom5Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom5Cross.png")}"));
+        Custom6Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom6Cross.png")}"));
+        Custom7Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom7Cross.png")}"));
+        Custom8Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom8Cross.png")}"));
+        Custom9Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom9Cross.png")}"));
+        Custom10Texture.LoadImage(File.ReadAllBytes($"{Path.Combine(DefaultParentFolder!, "Custom10Cross.png")}"));
     }
 
     public static void RenderBaseCrosshair()
@@ -129,6 +141,24 @@ public class Crosshairs
                 break;
             case ModConfig.CrossHairEnum.Custom4:
                 tex = Custom4Texture;
+                break;
+            case ModConfig.CrossHairEnum.Custom5:
+                tex = Custom5Texture;
+                break;
+            case ModConfig.CrossHairEnum.Custom6:
+                tex = Custom6Texture;
+                break;
+            case ModConfig.CrossHairEnum.Custom7:
+                tex = Custom7Texture;
+                break;
+            case ModConfig.CrossHairEnum.Custom8:
+                tex = Custom8Texture;
+                break;
+            case ModConfig.CrossHairEnum.Custom9:
+                tex = Custom9Texture;
+                break;
+            case ModConfig.CrossHairEnum.Custom10:
+                tex = Custom10Texture;
                 break;
         }
         return tex;

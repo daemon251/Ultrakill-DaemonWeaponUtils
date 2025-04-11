@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Numerics;
 using System.Reflection;
 using PluginConfig.API;
 using PluginConfig.API.Decorators;
 using PluginConfig.API.Fields;
 using PluginConfig.API.Functionals;
 using UnityEngine;
-using UnityEngine.UIElements;
 using DaemonWeaponUtilsPlugin;
 using Vector3 = UnityEngine.Vector3;
 
@@ -83,7 +80,7 @@ public class ModConfig
     public enum CrossHairEnum {UltrakillBase, None, 
     //DefaultSmall, DefaultLarge, 
     ClosedCircle, OpenCircle, ClosedCross, OpenCross, Grenade, CrossBorder,
-    Custom1, Custom2, Custom3, Custom4};
+    Custom1, Custom2, Custom3, Custom4, Custom5, Custom6, Custom7, Custom8, Custom9, Custom10};
 
     public static CrossHairEnum[,] crosshairStyles = new CrossHairEnum[5, 3];
     public static float[,] crosshairScales = new float[5, 3];
@@ -175,6 +172,7 @@ public class ModConfig
     public static SpecialColorEnum[,] weaponSpecialColors = new SpecialColorEnum[5,3];
     public static bool useColorableTexturePiercer = false;
     public static Color piercerAltBeamColor = new Color();
+    public static SpecialColorEnum piercerAltBeamSpecialColor = SpecialColorEnum.Default;
     public static Color PiercerChargedAltHUDColor = new Color();
     public static SpecialColorEnum PiercerChargedAltHUDSpecialColor = SpecialColorEnum.Default;
     public static Color sharpshooterAltBeamColor = new Color();
@@ -192,6 +190,7 @@ public class ModConfig
     public static float[] revolverBeamWidths = new float[3];
     public static float piercerAltBeamWidth = new float();
     public static float sharpshooterAltBeamWidth = new float();
+    public static SpecialColorEnum sharpshooterAltBeamSpecialColor = SpecialColorEnum.Default;
     public static Color piercerChargeEffectColor = new Color();
     public static SpecialColorEnum piercerChargeEffectSpecialColor = SpecialColorEnum.Default;
 
@@ -227,6 +226,10 @@ public class ModConfig
             ColorField beamAltColorField = new ColorField(division, "Alternate Fire Beam Color", "RevolverAltBeamColor" + i, Color.white);
             beamAltColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {piercerAltBeamColor = e.value; Colors.MakeColoredPiercerAltTexture(Color.white);};
             piercerAltBeamColor = beamAltColorField.value; 
+
+            EnumField<SpecialColorEnum> piercerAltBeamSpecialColorField = new EnumField<SpecialColorEnum>(division, "Alt Fire Charged Beam Color Attribute", "ChargedAltBeamSpecialColor" + i, SpecialColorEnum.Default);
+            piercerAltBeamSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {piercerAltBeamSpecialColor = e.value;};
+            piercerAltBeamSpecialColor = piercerAltBeamSpecialColorField.value;
 
             FloatField altFireBeamWidthField = new FloatField(division, "Alt Fire Beam Width (Stacks)", "piercerAltFireBeamWidth" + i, 1.0f, 0.0f, 100f);
             altFireBeamWidthField.onValueChange += (FloatField.FloatValueChangeEvent e) => {piercerAltBeamWidth = e.value;};
@@ -308,6 +311,10 @@ public class ModConfig
             ColorField beamAltColorField = new ColorField(division, "Alternate Fire Beam Color", "RevolverAltBeamColor" + i, Color.white);
             beamAltColorField.onValueChange += (ColorField.ColorValueChangeEvent e) => {sharpshooterAltBeamColor = e.value;};
             sharpshooterAltBeamColor = beamAltColorField.value;
+
+            EnumField<SpecialColorEnum> sharpshooterAltBeamSpecialColorField = new EnumField<SpecialColorEnum>(division, "Alt Fire Charged Beam Color Attribute", "ChargedAltBeamSpecialColor" + i, SpecialColorEnum.Default);
+            sharpshooterAltBeamSpecialColorField.onValueChange += (EnumField<SpecialColorEnum>.EnumValueChangeEvent e) => {sharpshooterAltBeamSpecialColor = e.value;};
+            sharpshooterAltBeamSpecialColor = sharpshooterAltBeamSpecialColorField.value;
         }
     }
 

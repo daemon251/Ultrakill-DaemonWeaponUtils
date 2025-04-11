@@ -8,12 +8,20 @@ using System;
 using BepInEx.Logging;
 
 //TODO
-//freezeframe color
 //hit particles
 //clean code
-
 //srs
-//parry homing projectile color
+//railcannon particle color
+//srs charge colors
+//explosion colors
+//rocket body color
+//swordsmachine shotgun color?
+
+
+//piercer and sharpshooter altfire color attribute
+//shotgun shooting more efficent
+//PulseBlack and PulseWhite now work with revolver muzzleflashes properly
+//increased limit of custom crosshairs to ten 
 
 namespace DaemonWeaponUtilsPlugin;
 
@@ -98,6 +106,6 @@ public class Plugin : BaseUnityPlugin
             }
             Colors.OtherColorEffects();    
         }
-        Colors.ColorProjectiles();    
+        Colors.ColorEverything();    
     }
 }

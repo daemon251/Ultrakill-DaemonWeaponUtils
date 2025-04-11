@@ -128,6 +128,7 @@ public class Colors
         outputColor.r = settingColor.r * (1f - currentPulseFraction) + pulseColor.r * currentPulseFraction;
         outputColor.g = settingColor.g * (1f - currentPulseFraction) + pulseColor.g * currentPulseFraction;
         outputColor.b = settingColor.b * (1f - currentPulseFraction) + pulseColor.b * currentPulseFraction;
+        outputColor.a = 1f;
         return outputColor;
     }
 
@@ -197,14 +198,15 @@ public class Colors
     public static List<Nail> nails = new List<Nail>();
     public static List<Harpoon> harpoons = new List<Harpoon>();
 
-    public static void ColorProjectiles()
+    public static void ColorEverything()
     {
         if(ModConfig.customColors == false || Plugin.modEnabled == false) {return;}
 
+        Plugin.logger.LogInfo(projectiles.Count);
         for(int i = 0; i < projectiles.Count; i++)
         {
             Projectile projectile = projectiles[i];
-            if(projectile == null) {projectiles.Remove(projectile); i += -1; continue;}
+            if(projectile == null) {projectiles.Remove(projectile); i += -1; continue;} 
             //if(projectiles.Contains(projectile)) {continue;} //continue if we've already seen this projectile //removed to make rainbow cooler
             if(projectile.parried)
             {
@@ -668,6 +670,7 @@ public class Colors
         if(revolverBeam == null || revolverBeam.sourceWeapon == null || ModConfig.customColors == false || revolverBeam.beamType == BeamType.Enemy) {return;}
         if(firstTime == true) {revolverBeams.Add(revolverBeam);}
         Color color = Color.black;
+        ModConfig.SpecialColorEnum specialColor = ModConfig.SpecialColorEnum.Default;
         int variation = -1;
         float width = 1f;
         if(revolverBeam.sourceWeapon.GetComponent<Revolver>() != null)
@@ -675,19 +678,22 @@ public class Colors
             if(revolverBeam.sourceWeapon.GetComponent<Revolver>().gunVariation == 0) 
             {
                 variation = 0;
+                specialColor = ModConfig.weaponSpecialColors[0, variation];
                 color = ModConfig.revolverBeamColors[variation];
-                if(revolverBeam.maxHitsPerTarget > 2) {color = ModConfig.piercerAltBeamColor;}
+                if(revolverBeam.maxHitsPerTarget > 2) {color = ModConfig.piercerAltBeamColor; specialColor = ModConfig.piercerAltBeamSpecialColor;}
             }
             else if(revolverBeam.sourceWeapon.GetComponent<Revolver>().gunVariation == 1) 
             {
                 variation = 1;
+                specialColor = ModConfig.weaponSpecialColors[0, variation];
                 color = ModConfig.revolverBeamColors[variation];
             }
             else if(revolverBeam.sourceWeapon.GetComponent<Revolver>().gunVariation == 2) 
             {
                 variation = 2;
                 color = ModConfig.revolverBeamColors[variation];
-                if(revolverBeam.ricochetAmount > 0 || revolverBeam.hasBeenRicocheter) {color = ModConfig.sharpshooterAltBeamColor;}
+                specialColor = ModConfig.weaponSpecialColors[0, variation];
+                if(revolverBeam.ricochetAmount > 0 || revolverBeam.hasBeenRicocheter) {color = ModConfig.sharpshooterAltBeamColor; specialColor = ModConfig.sharpshooterAltBeamSpecialColor;}
             }
             if(ModConfig.enableColors[0, variation] == false) {return;}
             if(changeWidth == true) 
@@ -699,8 +705,8 @@ public class Colors
 
             Color currentColor = Color.white;
             if(revolverBeam.lr != null) {currentColor = revolverBeam.lr.startColor;}
-            color = SpecialColorLogic(ModConfig.weaponSpecialColors[0, variation], currentColor, color, firstTime);
-            if(revolverBeam.muzzleLight != null) {revolverBeam.muzzleLight.color = color;}
+            color = SpecialColorLogic(specialColor, currentColor, color, firstTime);
+            if(revolverBeam.muzzleLight != null) {revolverBeam.muzzleLight.color = color; Plugin.logger.LogInfo("a");}
         }
         else if(revolverBeam.sourceWeapon.GetComponent<Railcannon>() != null)
         {
@@ -821,7 +827,7 @@ public class Colors
             }
         }
     
-        [HarmonyPostfix]
+        /*[HarmonyPostfix]
         private static void Postfix()
         {
             if(ModConfig.customColors == false) {return;}
@@ -829,6 +835,17 @@ public class Colors
 
             //slightly inefficent
             projectiles = (UnityEngine.Object.FindObjectsOfType(typeof(Projectile)) as Projectile[]).ToList<Projectile>();
+        }*/
+    }
+
+    [HarmonyPatch(typeof(Projectile), "Start")]
+    public class ProjectileStartpatch
+    {
+        [HarmonyPostfix]
+        private static void Postfix(Projectile __instance)
+        {
+            //there isnt an OnDestroy or something so we null check and remove later if needed
+            projectiles.Add(__instance);
         }
     }
 
@@ -871,16 +888,6 @@ public class Colors
             harpoons.Remove(__instance);
         }
     }
-
-    /*[HarmonyPatch(typeof(Railcannon), "Shoot")]
-    public class RailcannonShootPatch
-    {
-        [HarmonyPostfix]
-        private static void Postfix()
-        {
-            harpoons = (UnityEngine.Object.FindObjectsOfType(typeof(Harpoon)) as Harpoon[]).ToList<Harpoon>();
-        }
-    }*/
 
     [HarmonyPatch(typeof(Shotgun), "ShootSinks")]
     public class ShotgunShootSinksPatch
