@@ -202,7 +202,6 @@ public class Colors
     {
         if(ModConfig.customColors == false || Plugin.modEnabled == false) {return;}
 
-        Plugin.logger.LogInfo(projectiles.Count);
         for(int i = 0; i < projectiles.Count; i++)
         {
             Projectile projectile = projectiles[i];
@@ -706,7 +705,7 @@ public class Colors
             Color currentColor = Color.white;
             if(revolverBeam.lr != null) {currentColor = revolverBeam.lr.startColor;}
             color = SpecialColorLogic(specialColor, currentColor, color, firstTime);
-            if(revolverBeam.muzzleLight != null) {revolverBeam.muzzleLight.color = color; Plugin.logger.LogInfo("a");}
+            if(revolverBeam.muzzleLight != null) {revolverBeam.muzzleLight.color = color; }
         }
         else if(revolverBeam.sourceWeapon.GetComponent<Railcannon>() != null)
         {
