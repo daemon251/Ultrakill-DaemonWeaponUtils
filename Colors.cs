@@ -586,7 +586,7 @@ public class Colors
             Light component4;
             if (cannonball.TryGetComponent<Light>(out component4)) {component4.color = color;}*/
         }
-        foreach(Coin coin in MonoSingleton<CoinList>.Instance.revolverCoinsList)
+        foreach(Coin coin in MonoSingleton<CoinTracker>.Instance.revolverCoinsList)
         {
             if(ModConfig.coinSettingsToggle == false || ModConfig.enableColors[0, 1] == false) {break;}
             Color coinColor = ModConfig.coinColor;
@@ -594,7 +594,7 @@ public class Colors
 
             MeshRenderer componentMesh;
             Color currentCoinColor = new Color(1f, 1f, 1f);
-            if (coin.transform.GetChild(0).gameObject.TryGetComponent<MeshRenderer>(out componentMesh) && (bool) (UnityEngine.Object) componentMesh.material && componentMesh.material.HasProperty("_Color"))
+            if(coin.transform.GetChild(0).gameObject.TryGetComponent<MeshRenderer>(out componentMesh) && (bool) (UnityEngine.Object) componentMesh.material && componentMesh.material.HasProperty("_Color"))
             {
                 currentCoinColor = componentMesh.material.GetColor("_Color");
             }
@@ -602,7 +602,7 @@ public class Colors
 
             TrailRenderer componentTrail;
             Color currentCoinTrailColor = new Color(1f, 1f, 1f);
-            if (coin.TryGetComponent<TrailRenderer>(out componentTrail))
+            if(coin.TryGetComponent<TrailRenderer>(out componentTrail))
             {
                 currentCoinTrailColor = componentTrail.startColor;
             }
@@ -610,12 +610,12 @@ public class Colors
 
             //copied from projectile parry code
             MeshRenderer component2;
-            if (coin.transform.GetChild(0).gameObject.TryGetComponent<MeshRenderer>(out component2) && (bool) (UnityEngine.Object) component2.material && component2.material.HasProperty("_Color"))
+            if(coin.transform.GetChild(0).gameObject.TryGetComponent<MeshRenderer>(out component2) && (bool) (UnityEngine.Object) component2.material && component2.material.HasProperty("_Color"))
             {
                 component2.material.SetColor("_Color", coinColor);
             }
             TrailRenderer component3;
-            if (coin.TryGetComponent<TrailRenderer>(out component3))
+            if(coin.TryGetComponent<TrailRenderer>(out component3))
             {
                 Gradient gradient = new Gradient();
                 gradient.SetKeys(new GradientColorKey[2]

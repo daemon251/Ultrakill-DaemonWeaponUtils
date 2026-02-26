@@ -6,6 +6,7 @@ using UnityEngine;
 using HarmonyLib;
 using System;
 using BepInEx.Logging;
+using UnityEngine.SceneManagement;
 
 //TODO
 //hit particles

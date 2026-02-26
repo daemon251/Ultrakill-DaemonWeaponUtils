@@ -93,7 +93,7 @@ public class ModConfig
     //public static bool nailFollowCurrentRainbow = false;
     public static void CreateBaseFields(ConfigPanel cp, int i)
     {
-        ConfigPanel positionPanel = new ConfigPanel(cp, "Position / Scale / Angle", "positionPanel" + i);
+        ConfigPanel positionPanel = new ConfigPanel(cp, "Weapon Position / Scale / Angle", "positionPanel" + i);
 
         FloatField xPosField = new FloatField(positionPanel, "X Position Offset", "xPosOffset" + i, 0.0f, -100f, 100f);
         xPosField.onValueChange += (FloatField.FloatValueChangeEvent e) => {weaponOffsets[i].x = e.value;}; 
@@ -736,5 +736,20 @@ public class ModConfig
         ConfigPanel rocket_launcher2Panel = new ConfigPanel(rocket_launcherPanel, "Firestarter", "rocket_launcherPanel");
         CreateBaseFields(rocket_launcher2Panel, 14);
         CreateRocketLauncherFields(rocket_launcher2Panel, 2);
+
+        ConfigPanel armPanel = new ConfigPanel(division, "Arms", "armPanel");
+        armPanel.fieldColor = new Color(0.12f, 0.12f, 0.12f);
+
+        BoolField blueArmVisibleField = new BoolField(armPanel, "Blue Arm Visible", "blueArmVisible", true);
+        blueArmVisibleField.onValueChange += (BoolField.BoolValueChangeEvent e) => {WeaponLocations.blueArmVisible = e.value; WeaponLocations.changeArmVisiblity();};
+        WeaponLocations.blueArmVisible = blueArmVisibleField.value;
+
+        BoolField redArmVisibleField = new BoolField(armPanel, "Red Arm Visible", "redArmVisible", true);
+        redArmVisibleField.onValueChange += (BoolField.BoolValueChangeEvent e) => {WeaponLocations.redArmVisible = e.value; WeaponLocations.changeArmVisiblity();};
+        WeaponLocations.redArmVisible = redArmVisibleField.value;
+
+        BoolField greenArmVisibleField = new BoolField(armPanel, "Green Arm Visible", "greenArmVisible", true);
+        greenArmVisibleField.onValueChange += (BoolField.BoolValueChangeEvent e) => {WeaponLocations.greenArmVisible = e.value; WeaponLocations.changeArmVisiblity();};
+        WeaponLocations.greenArmVisible = greenArmVisibleField.value;
     }
 }

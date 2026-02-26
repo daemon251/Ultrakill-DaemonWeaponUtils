@@ -44,6 +44,8 @@ public class Crosshairs
 
     public static void RenderBaseCrosshair()
     {
+        if(MonoSingleton<StatsManager>.Instance == null) {return;}
+        if(MonoSingleton<StatsManager>.Instance.crosshair == null) {return;}
         Color color3 = MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color;
         if(ModConfig.mainCrossHairEnum == ModConfig.CrossHairEnum.UltrakillBase) {MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color = new Color(color3.r, color3.g, color3.b, 1f); return;}
         if(Plugin.IsMenu() == true) 
@@ -61,7 +63,6 @@ public class Crosshairs
         MonoSingleton<StatsManager>.Instance.crosshair.transform.GetComponent<UnityEngine.UI.Image>().color = new Color(color2.r, color2.g, color2.b, 0f);
 
         if(ModConfig.mainCrossHairEnum == ModConfig.CrossHairEnum.None) {return;}
-
         if(MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(4).gameObject.activeSelf == true && ModConfig.mainCrossHairKeepInfo == false)
         {
             MonoSingleton<StatsManager>.Instance.crosshair.transform.GetChild(4).gameObject.SetActive(false);

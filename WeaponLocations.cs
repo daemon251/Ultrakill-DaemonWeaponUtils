@@ -1,5 +1,8 @@
 using UnityEngine;
 using DaemonWeaponUtilsPlugin;
+using HarmonyLib;
+using UnityEngine.SceneManagement;
+using System;
 public class WeaponLocations
 {
     public enum WeaponEnum
@@ -215,5 +218,57 @@ public class WeaponLocations
             rocketLauncher.transform.localScale = rocketLauncher.wpos.defaultScale;
         }
     }
-    
+
+
+    public static bool blueArmVisible = true;
+    public static bool redArmVisible = true;
+    public static bool greenArmVisible = true;
+
+    [HarmonyPatch(typeof(Punch), "Start")]
+    public class PunchStartPatch
+    {
+        [HarmonyPostfix]
+        private static void Postfix()
+        {
+            changeArmVisiblity();
+        }
+    }
+
+    public static void changeArmVisiblity()
+    {
+        if(MonoSingleton<FistControl>.Instance != null)
+        {
+            //GameObject mainCameraObj = guns.transform.parent.gameObject;
+            GameObject punch = MonoSingleton<FistControl>.Instance.gameObject;//mainCameraObj.transform.GetChild(3).gameObject;
+
+            GameObject hookArm = punch.transform.GetChild(1).gameObject;
+            GameObject blueArm = punch.transform.GetChild(2).gameObject;
+            GameObject redArm = punch.transform.GetChild(3).gameObject;
+
+            GameObject blueArmObj1 = blueArm.transform.GetChild(0).gameObject;
+            GameObject feedBacker = blueArmObj1.transform.GetChild(1).gameObject;
+            SkinnedMeshRenderer blueArmRenderer = feedBacker.GetComponent<SkinnedMeshRenderer>();
+            blueArmRenderer.enabled = blueArmVisible;
+
+            GameObject redArm__lp = redArm.transform.GetChild(0).gameObject;
+            SkinnedMeshRenderer redArmRenderer = redArm__lp.GetComponent<SkinnedMeshRenderer>();
+            redArmRenderer.enabled = redArmVisible;
+
+            GameObject greenArm = hookArm.transform.GetChild(0).gameObject;
+            GameObject greenArmFinal = greenArm.transform.GetChild(0).gameObject;
+            SkinnedMeshRenderer greenArmRenderer = greenArmFinal.GetComponent<SkinnedMeshRenderer>();
+            greenArmRenderer.enabled = greenArmVisible;
+        }
+    }
+
+    /*[HarmonyPatch(typeof(SceneHelper), "OnSceneLoaded")]
+    public class SceneHelperPatch
+    {
+        [HarmonyPostfix]
+        private static void Prefix(ref float length)
+        {
+            
+            
+        }
+    }*/
 }
